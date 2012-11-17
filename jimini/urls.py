@@ -5,6 +5,7 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+	url(r'^$', 'jimini.app.website.views.splash_page', name='home'),
     # Examples:
     # url(r'^$', 'jimini.views.home', name='home'),
     # url(r'^jimini/', include('jimini.foo.urls')),
