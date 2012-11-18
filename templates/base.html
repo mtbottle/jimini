@@ -28,8 +28,10 @@
 			*zoom:1; /* hasLayout ie7 trigger */
 			vertical-align: top;
 			font-family: 'Orienta', sans-serif;
-			font-size: 22px;
-			padding-left: 10px;
+			font-size: 18px;
+			padding-left: 34px;
+			padding-right: 27px;
+			padding-top: 15px;
 		}
 
 		.navbar-inner {
@@ -56,11 +58,11 @@
 
 	<div class="navbar">
 		<ul class="nav">
-			<li class='span3'><a>About</a></li>
-			<li class='span3'><a>How this works</a></li>
-			<li class='span3'><a href= "https://www.dailycred.com/connect?identity_provider=email
+			<li class='span2'><a href='http://www.facebook.com/jimini.co'>About</a></li>
+			<li class='span2'><a href='{% url how_this_works %}'>How this works</a></li>
+			<li class='span2'><a href= "https://www.dailycred.com/connect?identity_provider=email
 &client_id=3a71952c-8709-4111-9266-16e40b0d1399&redirect_uri=jimini.co">Sign-in/Register</a></li>
-			<li class='span3'><a>Contact us</a></li>
+			<li class='span2'><a href="mailto:jimini.origami@gmail.com">Contact us</a></li>
 		</ul>
 	</div>
 
@@ -70,7 +72,13 @@
 		{% endblock %}
 	<hr>
 		<footer>
-			<p>&copy; Jimini 2012</p>
+			<div class='span3' style='float:right;text-align:left'>
+				<a class="twitter-timeline" href="https://twitter.com/jimini_co">Follow @jimini_co on Twitter!</a>
+				<iframe src="http://www.facebook.com/plugins/like.php?href=http://www.facebook.com/jimini.co"
+				scrolling="no" frameborder="0"
+				style="border:none; width:450px; height:80px"></iframe>
+			</div>
+			<p class='span3' style='float:left;'>&copy; Jimini 2012 </p>
 		</footer>
 		
     </div> <!-- /container -->

@@ -8,3 +8,6 @@ def splash_page(request):
 	''' This will return the splash page for index '''
 	return render_to_response('index.html',{},
                                context_instance=RequestContext(request))
+
+def how_this_works(request):
+	return render_to_response('how_it_works.html', {})

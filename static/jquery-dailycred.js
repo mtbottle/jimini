@@ -97,12 +97,14 @@
       }
     });
   };
-
+/*
   $(document).ready(function() {
     $('#dailycred').dailycred({
       client_id: "dailycred",
       style: 'user',
       after: function(obj) {
+      return prettyPrint();
+    }
         $('#dailycred-jq-response').html(JSON.stringify(obj, void 0, 2));
         return prettyPrint();
       }
@@ -113,5 +115,5 @@
       return false;
     });
   });
-
+*/
 }).call(this);

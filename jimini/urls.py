@@ -6,6 +6,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
 	url(r'^$', 'jimini.app.website.views.splash_page', name='home'),
+	url(r'^how_this_works$', 'jimini.app.website.views.how_this_works', name='how_this_works'),
     # Examples:
     # url(r'^$', 'jimini.views.home', name='home'),
     # url(r'^jimini/', include('jimini.foo.urls')),
