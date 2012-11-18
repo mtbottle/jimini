@@ -3,6 +3,28 @@
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
-	<h1>Welcome</h1>
+
+<!-- dailycred analytics -->
+<script type="text/javascript">
+(function() {
+  var dc, url;
+  window.dc_opts = {
+    clientId: "3a71952c-8709-4111-9266-16e40b0d1399",
+    home: "https://www.dailycred.com"
+  };
+  dc = document.createElement("script");
+  url = dc_opts.home + "/public/js/cred.coffee";
+  dc.src = url;
+  document.body.appendChild(dc);
+}).call(this);
+</script>
+<!-- end dailycred -->
+
+
+
+
+
+
+
 
 {% endblock %}
