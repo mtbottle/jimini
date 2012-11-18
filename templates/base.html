@@ -12,11 +12,28 @@
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
 	<script src="{{ STATIC_URL }}jquery-dailycred.js"></script>
 	<style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-		background-image: url('{% static "website_parts/homepage/background.png" %}');
-		background-repeat: repeat;
+		body {
+			padding-top: 60px;
+			padding-bottom: 40px;
+			background-image: url('{% static "website_parts/homepage/background.png" %}');
+			background-repeat: repeat;
+			text-align: center;
+		}
+
+		.navbar .nav,
+		.navbar .nav > li {
+			float:none;
+			display:inline-block;
+			*display:inline; /* ie7 fix */
+			*zoom:1; /* hasLayout ie7 trigger */
+			vertical-align: top;
+			font-family: 'Orienta', sans-serif;
+			font-size: 22px;
+			padding-left: 10px;
+		}
+
+		.navbar-inner {
+			text-align:center;
 		}
 
 		img.center {
@@ -25,31 +42,25 @@
 			margin-right: auto;
 		}
 
-		ul.nav {
-			font-family: 'Orienta', sans-serif;
-		}
-
-		ul.nav li {
-			float: left;
+		.tutorial {
+			padding-top: 10px;
 			padding-bottom: 10px;
-			padding-left: 220px;
-			padding-top: 30px;
-			font-size: 20px;
+			padding-right: 3px;
 		}
 
     </style>
   </head>
-  <body 40px>
+  <body>
 
 	<a class="brand" href="../"><img class="center" src="{% static 'website_parts/homepage/logo.png' %}" /></a>
 
 	<div class="navbar">
 		<ul class="nav">
-			<li>About</li>
-			<li>How this works</li>
-			<li><a href= "https://www.dailycred.com/connect?identity_provider=email
+			<li class='span3'><a>About</a></li>
+			<li class='span3'><a>How this works</a></li>
+			<li class='span3'><a href= "https://www.dailycred.com/connect?identity_provider=email
 &client_id=3a71952c-8709-4111-9266-16e40b0d1399&redirect_uri=jimini.co">Sign-in/Register</a></li>
-			<li>Contact us</li>
+			<li class='span3'><a>Contact us</a></li>
 		</ul>
 	</div>
 
