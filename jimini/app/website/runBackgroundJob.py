@@ -4,17 +4,30 @@ import retrievemail
 import os
 import time
 import subprocess
+import poplib
+
+import sendmail
+ 
+
 
 print "Running Mail Parser and Mail Sender script"
 
-#while 1==1:
-#print "inside loop"
-#time.sleep(2)
+orders = retrievemail.parseEmailAndFetchOrderInfo()
+#print orders
+for order in orders:
+    print "Processing Order:" + str(order)
+    print order['from']
+    print order['to']
+    print order.get('coupon',None)
 
-print "inside loop"
-time.sleep(2)
+    #construct the email
+    subject = 'Your Origami is ready to print!'
+    body = ''
+    userMail = 'guruprasad.jg@gmail.com'
+    fromMail = 'jimini.Origami@gmail.com'
 
-orderInfo = retrievemail.parseEmailAndFetchOrderInfo()
-print orderInfo
+    #send the email
+    sendmail.send_jemini_email(fromMail, userMail, subject , body)
 
-print "Oh!! I got killed, somebody restart me!"
+
+print "Done processing all orders!"
