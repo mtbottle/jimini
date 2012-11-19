@@ -2,8 +2,17 @@
 
 {% load staticfiles %}
 
-<body>
-<img src='{% static "how_it_works.jpg" %}'/>
+<head>
+	<style type='text/css'>
+		body {
+			background-image: url('{% static "website_parts/homepage/background.png" %}');
+		}
+	</style>
+
+</head>
+
+<body style='text-align: center;margin-left:auto; margin-right:auto;'>
+<img src='{% static "how_it_works.jpg" %}' />
 </body>
 
 </html>
