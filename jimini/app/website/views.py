@@ -11,3 +11,13 @@ def splash_page(request):
 
 def how_this_works(request):
 	return render_to_response('how_it_works.html', {})
+
+def wrap_page(request,coupon):
+	''' This will return the wrap your gift page '''
+	return render_to_response('wrap.html',{'coupon' : coupon},
+                               context_instance=RequestContext(request))
+
+def coupon_redirect(request,coupon):
+	''' This will redirect to amazon with the right coupon code '''
+	return render_to_response('redirect.html',{'coupon' : coupon},
+                               context_instance=RequestContext(request))
