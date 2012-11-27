@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<ol>
+
+	<li> Go to amazon.com to buy your digital giftcard!
+		<a href="http://www.amazon.com/gp/gc"> [amazon.com] </a>
+	</li>
+
+	<li>Paste this email to whoever you want to send your link to:
+		<br/>
+		<span class="label label-info">{{ generated_email }}</span>
+	</li>
+	<li> Check the email you sign up with! </li>
+	<li> Follow the instructions on the email to print your origami-QR code! </li>
+</ol>
+
+{% endblock %}
