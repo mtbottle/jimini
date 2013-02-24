@@ -21,3 +21,13 @@ class Order(models.Model):
 		body = 'Find your origami here: ' + jimini_order_link
 		
 		sendmail.send_jemini_email(fromMail, userMail, subject , body)
+
+class Origami(models.Model):
+        title = models.CharField(max_length=255)
+	description = models.TextField()
+	picture = models.ImageField(upload_to="origami/pictures/")
+	youtube_video_id = models.CharField(max_length=255)
+
+	def __unicode__(self):
+                return self.title
+        
