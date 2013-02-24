@@ -1,7 +1,9 @@
 # Create your views here.
+from models import Origami
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, Context, loader
-from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404, render_to_response
 
 # import models
 from models import Order
@@ -18,8 +20,15 @@ def how_this_works(request):
 	return render_to_response('how_it_works.html', {})
 
 def wrap_page(request,coupon):
+        origami = get_object_or_404(Origami, pk=1)
 	''' This will return the wrap your gift page '''
 	return render_to_response('wrap.html',{'coupon' : coupon},
+                               context_instance=RequestContext(request))
+
+def origamis(request):
+        origamis = Origami.objects.all()
+	''' This will return the wrap your gift page '''
+	return render_to_response('origamis.html',{'origamis': origamis},
                                context_instance=RequestContext(request))
 
 def coupon_redirect(request,coupon):

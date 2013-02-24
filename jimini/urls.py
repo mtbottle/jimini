@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^$', 'jimini.app.website.views.splash_page', name='home'),
     url(r'^how_this_works$', 'jimini.app.website.views.how_this_works', name='how_this_works'),
     url(r'^wrap/(?P<coupon>.+)$', 'jimini.app.website.views.wrap_page', name='wrap'),
+    url(r'^origamis$', 'jimini.app.website.views.origamis', name='origamis'),
     url(r'^coupon/(?P<coupon>.+)$', 'jimini.app.website.views.coupon_redirect', name='redirect'),
     url(r'^user_page', 'jimini.app.website.views.user_page', name='user_page'),
 

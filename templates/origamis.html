@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Wrap your Gift{% endblock %}
+
+{% block content %}
+<script src='{% static "js/jquery-ui-1.10.1.custom.min.js" %}'></script>
+<script src='{% static "js/jquery.flip.js" %}'></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".span4").on('mouseenter', function() {
+		try {
+			$(this).revertFlip();
+		} catch(error) {
+			$(this).flip({
+				direction:'lr',
+				content:$(this).attr('description'),
+				color:'white',
+				onEnd: function(){
+
+				}
+			});
+		}
+	});
+
+});
+</script>
+
+	<h1>Choose an origami</h1>
+	<div class="row">
+	{% for origami in origamis %} 
+		<div class="span4" style="height: 200px; background-color: white; margin-bottom: 10px;" description="<h3>{{ origami.title }}</h3><p>{{ origami.description }}</p>">
+			<img style="margin: 10px;" src="{{ origami.picture.url }}">
+		</div>
+	{% endfor %}
+	</div>
+	
+{% endblock %}
