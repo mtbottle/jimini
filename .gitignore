@@ -2,3 +2,4 @@ manage.py
 *.db
 *~
 *.pyc
+media
