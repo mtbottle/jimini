@@ -24,6 +24,49 @@ def wrap_page(request,coupon):
 	''' This will return the wrap your gift page '''
 	return render_to_response('wrap.html',{'coupon' : coupon},
                                context_instance=RequestContext(request))
+                               
+def handle_login(request):
+    ''' Source http://login.amazon.com/website '''
+    
+    import pycurl
+    import urllib
+    import json
+    import StringIO
+    
+    b = StringIO.StringIO()
+    
+    if request.GET.has_key("access_token"):
+        access_token = str(request.GET["access_token"])
+        
+        # verify that the access token belongs to us
+        c = pycurl.Curl()
+        c.setopt(pycurl.URL, "https://api.amazon.com/auth/o2/tokeninfo?access_token=" + urllib.quote_plus(access_token))
+        c.setopt(pycurl.SSL_VERIFYPEER, 1)
+        c.setopt(pycurl.WRITEFUNCTION, b.write)
+         
+        c.perform()
+        d = json.loads(b.getvalue())
+         
+        if d['aud'] != 'amzn1.application-oa2-client.8b29ce13f5444fb783556d29ad0216e1' :
+            # the access token does not belong to us
+            raise BaseException("Invalid Token")
+         
+        # exchange the access token for user profile
+        b = StringIO.StringIO()
+         
+        c = pycurl.Curl()
+        c.setopt(pycurl.URL, "https://api.amazon.com/user/profile")
+        c.setopt(pycurl.HTTPHEADER, ["Authorization: bearer " + access_token])
+        c.setopt(pycurl.SSL_VERIFYPEER, 1)
+        c.setopt(pycurl.WRITEFUNCTION, b.write)
+         
+        c.perform()
+        user = json.loads(b.getvalue())
+         
+        print "%s %s %s"%(user['name'], user['email'], user['user_id'])
+    
+	return render_to_response('index.html',{"user": user},
+                               context_instance=RequestContext(request))
 
 def origamis(request):
         origamis = Origami.objects.all()

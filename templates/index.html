@@ -5,23 +5,10 @@
 
 {% block content %}
 
-<!-- dailycred analytics -->
-<script type="text/javascript">
-(function() {
-  var dc, url;
-  window.dc_opts = {
-    clientId: "3a71952c-8709-4111-9266-16e40b0d1399",
-    home: "https://www.dailycred.com"
-  };
-  dc = document.createElement("script");
-  url = dc_opts.home + "/public/js/cred.coffee";
-  dc.src = url;
-  document.body.appendChild(dc);
-}).call(this);
-</script>
-<!-- end dailycred -->
-
-	<div class='span12'/>
+    {% if user.email %}
+        Welcome {{ user.email }}!
+    {% endif %}
+    
 	<img src='{% static "website_parts/homepage/bigimage.png" %}'>
 	<br/>
 	<img class='tutorial' src='{% static "website_parts/homepage/step1.png" %}'>
