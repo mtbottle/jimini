@@ -53,6 +53,21 @@
     </style>
   </head>
   <body>
+  
+    <div id="amazon-root"></div>
+    <script type="text/javascript">
+    
+      window.onAmazonLoginReady = function() {
+        amazon.Login.setClientId('amzn1.application-oa2-client.8b29ce13f5444fb783556d29ad0216e1');
+      };
+      (function(d) {
+        var a = d.createElement('script'); a.type = 'text/javascript';
+        a.async = true; a.id = 'amazon-login-sdk';
+        a.src = 'https://api-cdn.amazon.com/sdk/login1.js?v=3';
+        d.getElementById('amazon-root').appendChild(a);
+      })(document);
+    
+    </script>
 
 	<a class="brand" href="../"><img class="center" src="{% static 'website_parts/homepage/logo.png' %}" /></a>
 
@@ -60,8 +75,12 @@
 		<ul class="nav">
 			<li class='span2'><a href='http://www.facebook.com/jimini.co'>About</a></li>
 			<li class='span2'>
-				<a href= "https://www.dailycred.com/connect?identity_provider=email
-&client_id=3a71952c-8709-4111-9266-16e40b0d1399&redirect_uri=jimini.co" disabled='true'>Sign-in/Register</a></li>
+			    <a href="#" id="LoginWithAmazon">
+                  <img border="0" alt="Login with Amazon"
+                    src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
+                    width="156" height="32" />
+                </a>	
+		    </li>
 			<li class='span2'><a href="mailto:jimini.origami@gmail.com">Contact us</a></li>
 		</ul>
 	</div>
@@ -85,4 +104,13 @@
 
 
 </body>
+<script type="text/javascript">
+
+  document.getElementById('LoginWithAmazon').onclick = function() {
+    options = { scope : 'profile' };
+    amazon.Login.authorize(options, 'https://jimini-c9-bfortuner.c9.io');
+    return false;
+  };
+
+</script>
 </html>
