@@ -72,7 +72,7 @@
 
   document.getElementById('LoginWithAmazon').onclick = function() {
     options = { scope : 'profile' };
-    amazon.Login.authorize(options, 'https://jimini-c9-bfortuner.c9.io/handle_login');
+    amazon.Login.authorize(options,  window.location.origin + '/handle_login');
     return false;
   };
 
