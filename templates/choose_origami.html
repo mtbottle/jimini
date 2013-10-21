@@ -16,17 +16,25 @@
 	{% endfor %}
 	
 		
-	<!--{% for origami in origamis %}
+	{% for origami in origamis %}
 		<div class="smallOrigamiBlock" description="<h3>{{ origami.title }}</h3><p>{{ origami.description }}</p>">
 			<img style="margin: 10px;" src="{{ origami.picture.url }}">
 		</div>
-	{% endfor %}-->
+	{% endfor %}-
 	</div>
+	
+	
 
     <div class="singleOrigamiView">
         <a class="OrigamiLink" href='/'><img class="bigOrigamiPic" src='static/origami_animals/transparent_background/deer-small2.png'/></a>
         <h1 class="origamiTitle">The Deer Origami</h1>
         <p>iusiuns inosi nso insoi nsoinsio nois nios nios nionsio nosnosin ois niosn ois niusiuns inosi nso insoi nsoinsio nois nios nios nionsio nosnosin ois niosn ois n iusiuns inosi nso insoi nsoinsio nois nios nios nionsio nosnosin ois niosn ois n</p>
+        
+        <form method="post" name="selectOrigami">
+            <input type="hidden" name="origamiName" value="{{origamiName}}">
+            <input id="select_origami" type="submit" value="Select This Origami">
+        </form>
+        
         <div class="secondaryOrigamiPics">
             <a href='/'><img src='static/origami_animals/transparent_background/deer-small2.png'/></a>
             <a href='/'><img src='static/origami_animals/transparent_background/deer-small2.png'/></a>

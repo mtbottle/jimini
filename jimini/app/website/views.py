@@ -24,8 +24,9 @@ def splash_page(request):
 
 def choose_origami(request):
     ''' This returns the page where the user picks a design '''
-    tmp_imgs = ['deer','anteater','flamingo','camel','horse','llama']
-    return render_to_response('choose_origami.html',{'tmp_imgs':tmp_imgs},
+    origamis = Origami.objects.all()
+    tmp_imgs = ['deer','anteater','flamingo','camel','horse']
+    return render_to_response('choose_origami.html',{'tmp_imgs':tmp_imgs, 'origamis':origamis},
                                 context_instance=RequestContext(request))
 
 def how_this_works(request):

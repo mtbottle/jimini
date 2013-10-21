@@ -158,7 +158,7 @@ img.center {
 
 
 .secondaryOrigamiPics img {
-    border: solid 2px #dedede;
+    border: solid 1px #dedede;
 	margin-right: 8px;
     height:110px;
     width:110px;
@@ -166,6 +166,6 @@ img.center {
 
 
 .secondaryOrigamiPics img:hover {
-    border: solid 2px #a8a8a8;
+    border: solid 1px #a8a8a8;
 }
 
