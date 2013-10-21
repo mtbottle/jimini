@@ -23,11 +23,11 @@ class Order(models.Model):
 		sendmail.send_jemini_email(fromMail, userMail, subject , body)
 
 class Origami(models.Model):
-        title = models.CharField(max_length=255)
-	description = models.TextField()
-	picture = models.ImageField(upload_to="origami/pictures/")
-	youtube_video_id = models.CharField(max_length=255)
-
-	def __unicode__(self):
-                return self.title
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    picture = models.ImageField(upload_to="origami/pictures/")
+    youtube_video_id = models.CharField(max_length=255)
+    
+    def __unicode__(self):
+        return self.title
         

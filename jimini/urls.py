@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^coupon/(?P<coupon>.+)$', 'jimini.app.website.views.coupon_redirect', name='redirect'),
     url(r'^user_page', 'jimini.app.website.views.user_page', name='user_page'),
     url(r'^handle_login', 'jimini.app.website.views.handle_login', name='handle_login'),
+    url(r'^choose_origami', 'jimini.app.website.views.choose_origami', name='choose_origami'),
 
     # Examples:
     # url(r'^$', 'jimini.views.home', name='home'),

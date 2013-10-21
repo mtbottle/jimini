@@ -1,0 +1,171 @@
+body {
+        margin:auto;
+	    /*background-image: url('{% static "website_parts/homepage/background.png" %}');
+		background-repeat: repeat;*/
+	    font-family:'Orienta', sans-serif;  
+        padding:0px;
+        color:#818181;
+}
+
+h2 {
+    font-weight: normal;
+    font-size: 25px;
+}
+
+.origamiDisplay {
+    height:140px;
+    width:880px;
+    padding-bottom:20px;
+    margin:auto;
+}
+
+.origamiDisplay img {
+    width: 128px; 
+    height: 128px; 
+    float: left; 
+    margin: 8px; 
+    -webkit-transition: margin .5s ease-out; 
+    -moz-transition: margin .5s ease-out; 
+    -o-transition: margin .5s ease-out; 
+} 
+
+.origamiDisplay img:hover { 
+    margin-top: .2px; 
+}
+
+.origamiDisplay img:active {
+    *border: 3px solid #dedede;
+    *margin-right:5px;
+    *margin-left:5px;
+}
+
+
+header {
+    width: 880px;
+    margin: auto;
+    margin-top:10px;
+    *background: purple;
+    margin-bottom:20px;
+}
+
+.container {
+    border: 0px;
+    *background: orange;
+    margin: auto;
+    width:880px;
+    margin-bottom:0px;
+}
+
+footer {
+    border-top: solid 1px #dedede;
+    width:880px;
+    margin: auto;
+    *background: blue;
+    height:65px;
+    padding: 0px;
+    margin-top: 15px;
+    padding-top:15px;
+}
+
+.logo {
+    
+}
+
+.facebook {
+    float:right;
+    height:100%;
+}
+
+.facebook > iframe {
+    width:265px;
+    text-align: right;
+}
+
+.topnav {
+    margin: auto;
+}
+
+.nav {
+    color:#a9a9a9;
+    *background: green;
+    text-align: left;
+    font-family:'Orienta', sans-serif;
+	font-size: 15px;
+}
+
+ul {
+    list-style-type: none;
+    padding:0px;
+    margin: 0px;
+}
+
+.nav > li {
+    display: inline;
+    margin-left:33px;
+    
+        }
+
+.nav > li > a {
+      color:#a9a9a9;
+      text-decoration: none;
+}
+
+.nav > li > a:hover {
+      color:#818181;
+      text-decoration: none;
+}
+
+
+img.center {
+	    width:75%;
+	    max-width: 320px;
+}
+
+.tutorial {
+	    padding-top: 10px;
+	    padding-right: 3px;
+        }
+        
+.workflowSteps {
+    padding-top: 10px;
+	padding-right: 3px;
+	height:100px;
+	width: 213px;
+}
+
+.workflowNav {
+    border-bottom: solid 1px #dedede;
+    padding-bottom:10px
+}
+
+.singleOrigamiView {
+    border-top: solid 1px #dedede;
+    border-bottom: solid 1px #dedede;
+    height: 500px;
+    margin:auto;
+}
+
+
+.bigOrigamiPic {
+    width:350px;
+    height: 350px;
+    float:left;
+}
+
+.origamiTitle {
+    text-align: left;
+}
+
+
+.secondaryOrigamiPics img {
+    border: solid 2px #dedede;
+	margin-right: 8px;
+    height:110px;
+    width:110px;
+}
+
+
+.secondaryOrigamiPics img:hover {
+    border: solid 2px #a8a8a8;
+}
+

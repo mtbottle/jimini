@@ -11,19 +11,35 @@ from models import Order
 # use a hash library to generate email
 import hashlib
 
+
+
+
 def splash_page(request):
 	''' This will return the splash page for index '''
-	return render_to_response('index.html',{},
+	origamis = Origami.objects.all()
+	tmp_imgs = ['deer','anteater','flamingo','camel','horse','llama']
+	return render_to_response('index.html',{'origamis': origamis, 'tmp_imgs':tmp_imgs},
                                context_instance=RequestContext(request))
+
+
+def choose_origami(request):
+    ''' This returns the page where the user picks a design '''
+    tmp_imgs = ['deer','anteater','flamingo','camel','horse','llama']
+    return render_to_response('choose_origami.html',{'tmp_imgs':tmp_imgs},
+                                context_instance=RequestContext(request))
 
 def how_this_works(request):
 	return render_to_response('how_it_works.html', {})
+
+
 
 def wrap_page(request,coupon):
         origami = get_object_or_404(Origami, pk=1)
 	''' This will return the wrap your gift page '''
 	return render_to_response('wrap.html',{'coupon' : coupon},
                                context_instance=RequestContext(request))
+                
+                
                                
 def handle_login(request):
     ''' Source http://login.amazon.com/website '''
