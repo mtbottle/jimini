@@ -25,8 +25,15 @@ class Order(models.Model):
 class Origami(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
+    bullet_1 = models.CharField(max_length=255)
+    bullet_2 = models.CharField(max_length=255)
+    bullet_3 = models.CharField(max_length=255)
     picture = models.ImageField(upload_to="origami/pictures/")
-    youtube_video_id = models.CharField(max_length=255)
+    picture_2 = models.ImageField(upload_to="origami/pictures/")
+    picture_3 = models.ImageField(upload_to="origami/pictures/")
+    picture_4 = models.ImageField(upload_to="origami/pictures/")
+
+    #youtube_video_id = models.CharField(max_length=255)
     
     def __unicode__(self):
         return self.title
