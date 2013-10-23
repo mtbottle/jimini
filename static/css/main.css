@@ -133,6 +133,16 @@ img.center {
 	width: 213px;
 }
 
+.workflowSteps_grey {
+    	padding-top: 10px;
+	padding-right: 3px;
+	height:100px;
+	width: 213px;
+	opacity: 0.4;
+    	filter: alpha(opacity=40); /* msie */	
+}
+
+
 .workflowNav {
     border-bottom: solid 1px #dedede;
     padding-bottom:10px

@@ -5,29 +5,20 @@
 
 {% block content %}
 <div class="workflowNav">
-	<img class='workflowSteps' src='{% static "website_parts/homepage/step1.png" %}'>
-	<img class='workflowSteps' src='{% static "website_parts/homepage/step2.png" %}'>
-	<img class='workflowSteps' src='{% static "website_parts/homepage/step3.png" %}'>
-	<img class='workflowSteps' src='{% static "website_parts/homepage/step4.png" %}'>
+        <a href='choose_origami.html'><img class='workflowSteps' src='{% static "website_parts/homepage/step1.png" %}'/></a>
+	<img class='workflowSteps_grey' src='{% static "website_parts/homepage/step2.png" %}'/>
+	<img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/>
+	<img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4.png" %}'/>
 </div>
-	<div class="origamiDisplay">
-	{% for image in tmp_imgs %}
-		<a class="smallOrigamiLink" href='/'><img class="smallOrigamiBlock" src='static/origami_animals/transparent_background/{{image}}-small2.png'/></a>
-	{% endfor %}
-	
-	<!--
-	{% for origami in origamis %}
-		<div class="smallOrigamiBlock" description="<h3>{{ origami.title }}</h3><p>{{ origami.description }}</p>">
-			<img style="margin: 10px;" src="{{ origami.picture.url }}">
-		</div>
-	{% endfor %}-->
-	
-	</div>
-	
+        <div class="origamiDisplay">
+	  {% for origami in origamis %}
+          <a class="smallOrigamiLink" href="choose_origami.html/{{ origami.id }}"><img class="smallOrigamiBlock" src="{{ origami.get_pictures.0.picture.url }}"/></a>
+          {% endfor %}
+        </div>
 	
 	{% for origami in origamis %}
 	<div class="singleOrigamiView">
-          <a class="OrigamiLink" href='/'><img class="bigOrigamiPic" src='{{ origami.picture.url }}'/></a>
+          <a class="OrigamiLink" href='choose_origami.html/{{origami.id}}'><img class="bigOrigamiPic" src='{{ origami.get_pictures.0.picture.url }}'/></a>
           <h1 class="origamiTitle">{{ origami.title }}</h1>
           <p>{{ origami.description }}</p>
           <ul>
@@ -38,15 +29,15 @@
 	  <br>
 
           <form method="post" name="selectOrigami">
-            <input type="hidden" name="{{ origami.title }}" value="{{ origami.title }}">
+            <input type="hidden" name="{{ origami.title }}" value="{{ origami.id }}">
             <input id="select_origami" type="submit" value="Select This Origami">
         </form>
         
         <div class="secondaryOrigamiPics"
-            <a href='/'><img src='{{ origami.picture_2.url }}'/></a>
-            <a href='/'><img src='{{ origami.picture_3.url }}'/></a>
-            <a href='/'><img src='{{ origami.picture_4.url }}'/></a>
-        </div>
+	     {% for image in origami.get_pictures %}
+	     <a href='choose_origamic.html/{{origami.id}}/{{image.id}}'><img src='{{ image.picture.url }}'/></a>
+             {% endfor %}
+	</div>
         
 	</div>
 	{% endfor %}

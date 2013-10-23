@@ -1,12 +1,10 @@
 # Create your views here.
-from models import Origami
-
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, Context, loader
 from django.shortcuts import get_object_or_404, render_to_response
 
 # import models
-from models import Order
+from models import Order, Origami, OrigamiImage
 
 # use a hash library to generate email
 import hashlib
@@ -17,16 +15,13 @@ import hashlib
 def splash_page(request):
 	''' This will return the splash page for index '''
 	origamis = Origami.objects.all()
-	tmp_imgs = ['deer','anteater','flamingo','camel','horse','llama']
-	return render_to_response('index.html',{'origamis': origamis, 'tmp_imgs':tmp_imgs},
+	return render_to_response('index.html',{'origamis': origamis},
                                context_instance=RequestContext(request))
-
 
 def choose_origami(request):
     ''' This returns the page where the user picks a design '''
     origamis = Origami.objects.all()
-    tmp_imgs = ['deer','anteater','flamingo','camel','horse']
-    return render_to_response('choose_origami.html',{'tmp_imgs':tmp_imgs, 'origamis':origamis},
+    return render_to_response('choose_origami.html',{'origamis':origamis},
                                 context_instance=RequestContext(request))
 
 def how_this_works(request):

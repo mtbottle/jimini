@@ -22,19 +22,32 @@ class Order(models.Model):
 		
 		sendmail.send_jemini_email(fromMail, userMail, subject , body)
 
+
+
 class Origami(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    bullet_1 = models.CharField(max_length=255)
-    bullet_2 = models.CharField(max_length=255)
-    bullet_3 = models.CharField(max_length=255)
-    picture = models.ImageField(upload_to="origami/pictures/")
-    picture_2 = models.ImageField(upload_to="origami/pictures/")
-    picture_3 = models.ImageField(upload_to="origami/pictures/")
-    picture_4 = models.ImageField(upload_to="origami/pictures/")
+    bullet_1 = models.CharField(max_length=255, blank=True)
+    bullet_2 = models.CharField(max_length=255, blank=True)
+    bullet_3 = models.CharField(max_length=255, blank=True)
+
+
+    def get_pictures(self):
+	    images = OrigamiImage.objects.filter(origami_id = self.id)
+	    return images
 
     #youtube_video_id = models.CharField(max_length=255)
     
     def __unicode__(self):
         return self.title
         
+
+
+
+class OrigamiImage(models.Model):
+	origami_id = models.ForeignKey(Origami)
+	picture = models.ImageField(upload_to="origami/pictures/")
+
+
+
+	

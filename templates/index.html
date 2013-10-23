@@ -11,23 +11,16 @@
     
 	<img src='{% static "website_parts/homepage/bigimage.png" %}'>
 	<br/>
-	<img class='tutorial' src='{% static "website_parts/homepage/step1.png" %}'>
+	<a href="/choose_origami.html"><img class='tutorial' src='{% static "website_parts/homepage/step1.png" %}'/></a>
 	<img class='tutorial' src='{% static "website_parts/homepage/step2.png" %}'>
 	<img class='tutorial' src='{% static "website_parts/homepage/step3.png" %}'>
 	<img class='tutorial' src='{% static "website_parts/homepage/step4.png" %}'>
 
     <h2 style="border-top: solid 1px #dedede; padding-top:10px;">Choose a design</h2>
 	<div class="origamiDisplay">
-	{% for image in tmp_imgs %}
-		<a class="smallOrigamiLink" href='/choose_origami.html'><img class="smallOrigamiBlock" src='static/origami_animals/transparent_background/{{image}}-small2.png'/></a>
+	{% for origami in origamis %}
+	<a class="smallOrigamiLink" href="choose_origami.html/{{ origami.id }}"><img class="smallOrigamiBlock" src="{{ origami.get_pictures.0.picture.url }}"/></a>
 	{% endfor %}
-	
-		
-	<!--{% for origami in origamis %}
-		<div class="smallOrigamiBlock" description="<h3>{{ origami.title }}</h3><p>{{ origami.description }}</p>">
-			<img style="margin: 10px;" src="{{ origami.picture.url }}">
-		</div>
-	{% endfor %}-->
 	</div>
 
 
