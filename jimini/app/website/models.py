@@ -1,5 +1,8 @@
 from django.db import models
 import sendmail
+from django import forms
+from localflavor.us.forms import USZipCodeField, USStateField
+
 
 # Create your models here.
 class Order(models.Model):
@@ -51,3 +54,12 @@ class OrigamiImage(models.Model):
 
 
 	
+class RecipientShippingForm(forms.Form):
+	recipient_name = forms.CharField(label='Recipient name', max_length=150)
+	message = forms.CharField(label='Message (optional)')
+	
+	ship_to_name = forms.CharField(label='Ship-to name')
+	ship_to_address = forms.CharField(label='Address')
+	city = forms.CharField(max_length=100, label='City')
+	state = USStateField()
+	zip_code = USZipCodeField()

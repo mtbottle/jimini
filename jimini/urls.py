@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^user_page', 'jimini.app.website.views.user_page', name='user_page'),
     url(r'^handle_login', 'jimini.app.website.views.handle_login', name='handle_login'),
     url(r'^choose_origami', 'jimini.app.website.views.choose_origami', name='choose_origami'),
+    url(r'^choose_recipient.html/(?P<origami_id>[0-9]+)$', 'jimini.app.website.views.choose_recipient', name='choose_recipient'),
+
 
     # Examples:
     # url(r'^$', 'jimini.views.home', name='home'),

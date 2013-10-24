@@ -28,10 +28,7 @@
 	  </ul>
 	  <br>
 
-          <form method="post" name="selectOrigami">
-            <input type="hidden" name="{{ origami.title }}" value="{{ origami.id }}">
-            <input id="select_origami" type="submit" value="Select This Origami">
-        </form>
+        <a href="../choose_recipient.html/{{ origami.id }}">Select This Origami</a>
         
         <div class="secondaryOrigamiPics"
 	     {% for image in origami.get_pictures %}

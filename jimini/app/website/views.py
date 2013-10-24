@@ -4,7 +4,7 @@ from django.template import RequestContext, Context, loader
 from django.shortcuts import get_object_or_404, render_to_response
 
 # import models
-from models import Order, Origami, OrigamiImage
+from models import Order, Origami, OrigamiImage, RecipientShippingForm
 
 # use a hash library to generate email
 import hashlib
@@ -23,6 +23,35 @@ def choose_origami(request):
     origamis = Origami.objects.all()
     return render_to_response('choose_origami.html',{'origamis':origamis},
                                 context_instance=RequestContext(request))
+
+
+def choose_recipient(request, origami_id):
+	'''This returns a form where the user picks a recipient
+	and provides shipping information.'''
+
+	origami = Origami.objects.get(id=origami_id)
+
+	if request.method == "POST":
+		form = RecipientShippingForm(request.POST) # A form bound to the POST data
+		if form.is_valid():
+			recipient_name = form.cleaned_data['recipient_name']
+			message = form.cleaned_data['message']
+			ship_to_name = form.cleaned_data['ship_to_name']
+			ship_to_address = form.cleaned_data['ship_to_address']
+			city = form.cleaned_data['city']
+			state = form.cleaned_data['state']
+			zip_code = form.cleaned_data['zip_code']
+			#generate order object with order_id
+			#send use responses to db
+			### order = Order(user_id='', origami_id='', recipient_name='', 
+			###              message='', ship_to_name='', ship_to_address='', city='', state='', zip_code='')
+			return render_to_response('payment.html', {'order':order}, context_instance=RequestContext(request))
+	else:
+		form = RecipientShippingForm() # An unbound form
+
+	return render_to_response('choose_recipient.html', {'form':form,'origami':origami,},
+					  context_instance=RequestContext(request))
+
 
 def how_this_works(request):
 	return render_to_response('how_it_works.html', {})
