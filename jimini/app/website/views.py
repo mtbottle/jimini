@@ -35,6 +35,7 @@ def choose_recipient(request, origami_id):
 		form = RecipientShippingForm(request.POST) # A form bound to the POST data
 		if form.is_valid():
 			recipient_name = form.cleaned_data['recipient_name']
+			sender_name = form.cleaned_data['sender_name']
 			message = form.cleaned_data['message']
 			ship_to_name = form.cleaned_data['ship_to_name']
 			ship_to_address = form.cleaned_data['ship_to_address']
@@ -43,9 +44,10 @@ def choose_recipient(request, origami_id):
 			zip_code = form.cleaned_data['zip_code']
 			#generate order object with order_id
 			#send use responses to db
-			### order = Order(user_id='', origami_id='', recipient_name='', 
-			###              message='', ship_to_name='', ship_to_address='', city='', state='', zip_code='')
-			return render_to_response('payment.html', {'order':order}, context_instance=RequestContext(request))
+			order = Order(origami_id=origami_id, recipient_name=recipient_name, sender_name=sender_name, 
+			              message=message, ship_to_name=ship_to_name, ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code)
+			order.save()
+			#return render_to_response('payment.html', {'order':order}, context_instance=RequestContext(request))
 	else:
 		form = RecipientShippingForm() # An unbound form
 

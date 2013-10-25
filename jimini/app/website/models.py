@@ -5,7 +5,7 @@ from localflavor.us.forms import USZipCodeField, USStateField
 
 
 # Create your models here.
-class Order(models.Model):
+class OLD_Order(models.Model):
 	''' Contains info for order '''
 	user_email = models.CharField(max_length=100)
 	generated_email = models.CharField(max_length=100)
@@ -33,7 +33,8 @@ class Origami(models.Model):
     bullet_1 = models.CharField(max_length=255, blank=True)
     bullet_2 = models.CharField(max_length=255, blank=True)
     bullet_3 = models.CharField(max_length=255, blank=True)
-
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    created_date = models.DateTimeField(auto_now_add = True)
 
     def get_pictures(self):
 	    images = OrigamiImage.objects.filter(origami_id = self.id)
@@ -56,10 +57,27 @@ class OrigamiImage(models.Model):
 	
 class RecipientShippingForm(forms.Form):
 	recipient_name = forms.CharField(label='Recipient name', max_length=150)
-	message = forms.CharField(label='Message (optional)')
+	sender_name = forms.CharField(label='Sender name', max_length=150)
+	message = forms.CharField(widget=forms.Textarea(attrs={'cols':40,'rows':5}), label='Message (optional)')
 	
 	ship_to_name = forms.CharField(label='Ship-to name')
 	ship_to_address = forms.CharField(label='Address')
 	city = forms.CharField(max_length=100, label='City')
 	state = USStateField()
 	zip_code = USZipCodeField()
+	
+
+class Order(models.Model):
+	user_id = 1
+	order_date = models.DateTimeField(auto_now_add = True)
+	origami_id = models.PositiveIntegerField()
+
+	recipient_name = models.CharField(max_length=150)
+	sender_name = models.CharField(max_length=150)
+	message = models.TextField(blank=True, max_length=500)
+	
+	ship_to_name = models.CharField(max_length=150)
+	ship_to_address = models.CharField(max_length=200)
+	city = models.CharField(max_length=100)
+	state = models.CharField(max_length=2)
+	zip_code = models.PositiveSmallIntegerField()

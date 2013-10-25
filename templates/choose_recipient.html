@@ -6,7 +6,7 @@
 {% block content %}
 <div class="workflowNav">
   <a href='../choose_origami.html/{{ origami.id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step1.png" %}'/></a>
-  <a href='../shipping_recipient.html/{{ origami.id }}'><img class='workflowSteps' src='{% static "website_parts/homepage/step2.png" %}'/></a>
+  <a href='../choose_recipient.html/{{ origami.id }}'><img class='workflowSteps' src='{% static "website_parts/homepage/step2.png" %}'/></a>
   <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/>
   <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4.png" %}'/>
 </div>
@@ -15,17 +15,13 @@
 
 <div class="RecipientShipping">
   <h3>Select Recipient</h3>
-  <form method="post" action="/contact/">{% csrf_token %}
-    <table>
-      <tr>
-	<td class="formlabel">Recipient name</td>
-	<td id="recipient_name">{{ form.recipient_name }}</td>
-      </tr>
-      <tr>
-	<td class="formlabel">Message</td>
-	<td id="message">{{ form.message }}</td>
-      </tr>
-    </table>
+  <form method="post" action="/choose_recipient.html/{{ origami.id }}">{% csrf_token %}
+	<span class="formlabel">To: </span><br>
+	<span id="recipient_name">{{ form.recipient_name }}</span><br>
+	<span class="formlabel">From: </span><br>
+	<span id="recipient_name">{{ form.sender_name }}</span><br>
+	<span class="formlabel">Message</span><br>
+	<span id="message">{{ form.message }}</span>
     <br>
     <h3>Shipping Address</h3>
     <table>
@@ -49,15 +45,18 @@
 	<td class="formlabel">Zip code</td>
 	<td id="ship_to_address">{{ form.zip_code }}</td>
       </tr>
+      <tr>
+	<td><a href="../choose_origami.html/{{ origami.id }}">Back</a></td>
+	<td><input type="submit" value="Save and Continue"></td>
+      </tr>
       </table>
-    <br>
-    <input type="submit" value="Save and Continue">
   </form>
 </div>
 
   <div class="checkoutOrigamiDisplay">
           <h3 class="origamiTitle">{{ origami.title }}</h3>
 	  <img src='{{ origami.get_pictures.0.picture.url }}'/>
+	  <h2>Price: ${{ origami.price }}</h2>
           <p>{{ origami.description }}</p>
   </div>
 

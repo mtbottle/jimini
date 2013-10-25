@@ -20,7 +20,8 @@
 	<div class="singleOrigamiView">
           <a class="OrigamiLink" href='choose_origami.html/{{origami.id}}'><img class="bigOrigamiPic" src='{{ origami.get_pictures.0.picture.url }}'/></a>
           <h1 class="origamiTitle">{{ origami.title }}</h1>
-          <p>{{ origami.description }}</p>
+          <h2>Price: ${{ origami.price }}</h2>
+	  <p>{{ origami.description }}</p>
           <ul>
 	    <li>{{origami.bullet_1}}</li>
 	    <li>{{origami.bullet_2}}</li>
