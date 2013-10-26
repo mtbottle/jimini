@@ -14,8 +14,9 @@ import os
 app_dir = os.path.dirname(__file__) # get current directory
 
 
-# Helper function to generate random email code like 'green-frogs@jimini.co'
+
 def gen_email_code():
+	''' Generates random email code like green-frogs@jimini.co'''
 	existing_codes = Order.objects.values_list('email_code', flat=True)
 	noun_file = open(os.path.join(app_dir, '../../../static/noun_list.txt'),'r')
 	words = [line.strip() for line in noun_file.readlines()]
