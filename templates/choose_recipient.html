@@ -27,10 +27,13 @@
     <form method="post" action="/choose_recipient.html/{{ origami.id }}">
     {% endif %}{% csrf_token %}
       <span class="formlabel">To: </span><br>
+      <span class='error'>{{ form.recipient_name.errors }}</span>
       <span id="recipient_name">{{ form.recipient_name }}</span><br>
       <span class="formlabel">From: </span><br>
+      <span class='error'>{{ form.sender_name.errors }}</span>
       <span id="recipient_name">{{ form.sender_name }}</span><br>
       <span class="formlabel">Message</span><br>
+      <span class='error'>{{ form.message.errors }}</span>
       <span id="message">{{ form.message }}</span>
     <br>
     <h3>Shipping Address</h3>
@@ -38,22 +41,27 @@
       <tr>
 	<td class="formlabel">Full name</td>
 	<td id="ship_to_name">{{ form.ship_to_name }}</td>
+	<td class='error'>{{ form.ship_to_name.errors }}</td>
       </tr>
       <tr>
 	<td class="formlabel">Address</td>
 	<td id="ship_to_address">{{ form.ship_to_address }}</td>
+	<td class='error'>{{ form.ship_to_address.errors }}</td>
       </tr>
       <tr>
 	<td class="formlabel">City</td>
 	<td id="ship_to_address">{{ form.city }}</td>
+	<td class='error'>{{ form.city.errors }}</td>
       </tr>
       <tr>
 	<td class="formlabel">State</td>
 	<td id="ship_to_address">{{ form.state }}</td>
+	<td class='error'>{{ form.state.errors }}</td>
       </tr>
       <tr>
 	<td class="formlabel">Zip code</td>
 	<td id="ship_to_address">{{ form.zip_code }}</td>
+	<td class='error'>{{ form.zip_code.errors }}</td>
       </tr>
       <tr>
 	<td>

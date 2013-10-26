@@ -69,7 +69,7 @@ def choose_recipient(request, origami_id, order_id=None):
 			ship_to_address = form.cleaned_data['ship_to_address']
 			city = form.cleaned_data['city']
 			state = form.cleaned_data['state']
-			zip_code = form.cleaned_data['zip_code']
+			zip_code = str(form.cleaned_data['zip_code'])
 			
 			# If the user is submitting the form for the first time, add the data to the db
 			if order_id == None:

@@ -211,6 +211,11 @@ the various origamis in greater detail */
 /* These are the choose_recipient + payment elements
 as the user is completing steps 2-3 of the workflow */
 
+
+.error {
+       color:red;
+}
+
 .checkoutOrigamiDisplay {
   float: right;
   width: 400px;

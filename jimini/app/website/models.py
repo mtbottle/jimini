@@ -58,8 +58,8 @@ class OrigamiImage(models.Model):
 # This is the form model for the "choose_recipient" page	
 class RecipientShippingForm(forms.Form):
 	recipient_name = forms.CharField(label='Recipient name', max_length=150)
-	sender_name = forms.CharField(label='Sender name', max_length=150)
-	message = forms.CharField(widget=forms.Textarea(attrs={'cols':40,'rows':5}), label='Message (optional)')
+	sender_name = forms.CharField(label='Sender name', max_length=150, required=False)
+	message = forms.CharField(widget=forms.Textarea(attrs={'cols':40,'rows':5}), label='Message (optional)', required=False)
 	
 	ship_to_name = forms.CharField(label='Ship-to name')
 	ship_to_address = forms.CharField(label='Address')
@@ -78,13 +78,13 @@ class Order(models.Model):
 	origami_id = models.PositiveIntegerField()
 
 	recipient_name = models.CharField(max_length=150)
-	sender_name = models.CharField(max_length=150)
+	sender_name = models.CharField(max_length=150, blank=True)
 	message = models.TextField(blank=True, max_length=500)
 	
 	ship_to_name = models.CharField(max_length=150)
 	ship_to_address = models.CharField(max_length=200)
 	city = models.CharField(max_length=100)
 	state = models.CharField(max_length=2)
-	zip_code = models.PositiveSmallIntegerField()
+	zip_code = models.CharField(max_length=20)
 
 
