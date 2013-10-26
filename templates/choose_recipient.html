@@ -5,9 +5,15 @@
 
 {% block content %}
 <div class="workflowNav">
-  <a href='../choose_origami.html/{{ origami.id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step1.png" %}'/></a>
-  <a href='../choose_recipient.html/{{ origami.id }}'><img class='workflowSteps' src='{% static "website_parts/homepage/step2.png" %}'/></a>
+  {% if order_id == None %}
+  <a href='/choose_origami.html/{{ origami_id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step1.png" %}'/></a>
+  <img class='workflowSteps' src='{% static "website_parts/homepage/step2.png" %}'/>
   <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/>
+  {% else %}
+  <a href='/choose_origami.html/{{ origami_id }}/{{ order_id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step1.png" %}'/></a>
+  <img class='workflowSteps' src='{% static "website_parts/homepage/step2.png" %}'/>
+  <a href='/payment.html/{{ origami_id }}/{{ order_id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/></a>
+  {% endif %}
   <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4.png" %}'/>
 </div>
 
@@ -15,13 +21,17 @@
 
 <div class="RecipientShipping">
   <h3>Select Recipient</h3>
-  <form method="post" action="/choose_recipient.html/{{ origami.id }}">{% csrf_token %}
-	<span class="formlabel">To: </span><br>
-	<span id="recipient_name">{{ form.recipient_name }}</span><br>
-	<span class="formlabel">From: </span><br>
-	<span id="recipient_name">{{ form.sender_name }}</span><br>
-	<span class="formlabel">Message</span><br>
-	<span id="message">{{ form.message }}</span>
+    {% if order_id != None %}
+    <form method="post" action="../{{ origami.id }}/{{ order_id }}">
+    {% else %}
+    <form method="post" action="/choose_recipient.html/{{ origami.id }}">
+    {% endif %}{% csrf_token %}
+      <span class="formlabel">To: </span><br>
+      <span id="recipient_name">{{ form.recipient_name }}</span><br>
+      <span class="formlabel">From: </span><br>
+      <span id="recipient_name">{{ form.sender_name }}</span><br>
+      <span class="formlabel">Message</span><br>
+      <span id="message">{{ form.message }}</span>
     <br>
     <h3>Shipping Address</h3>
     <table>
@@ -46,7 +56,13 @@
 	<td id="ship_to_address">{{ form.zip_code }}</td>
       </tr>
       <tr>
-	<td><a href="../choose_origami.html/{{ origami.id }}">Back</a></td>
+	<td>
+	  {% if order_id == None %}
+	  <a href="/choose_origami.html/{{ origami_id }}">Back</a>
+	  {% else %}
+	  <a href="/choose_origami.html/{{ origami_id }}/{{ order_id }}">Back</a>
+	  {% endif %}
+	</td>
 	<td><input type="submit" value="Save and Continue"></td>
       </tr>
       </table>

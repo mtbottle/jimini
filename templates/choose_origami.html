@@ -5,20 +5,32 @@
 
 {% block content %}
 <div class="workflowNav">
-        <a href='choose_origami.html'><img class='workflowSteps' src='{% static "website_parts/homepage/step1.png" %}'/></a>
-	<img class='workflowSteps_grey' src='{% static "website_parts/homepage/step2.png" %}'/>
-	<img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/>
-	<img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4.png" %}'/>
+  <img class='workflowSteps' src='{% static "website_parts/homepage/step1.png" %}'/>
+  
+  {% if origami_id == None %}  
+  <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step2.png" %}'/>
+  <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/>
+  
+  {% elif order_id == None %}
+  <a href='/choose_recipient.html/{{ origami_id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step2.png" %}'/></a>
+  <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/>
+  
+  {% else %}
+  <a href='/choose_recipient.html/{{ origami_id }}/{{ order_id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step2.png" %}'/></a>
+  <a href='/payment.html/{{ origami_id }}/{{ order_id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/></a>
+  
+  {% endif %}
+     <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4.png" %}'/>
 </div>
         <div class="origamiDisplay">
 	  {% for origami in origamis %}
-          <a class="smallOrigamiLink" href="choose_origami.html/{{ origami.id }}"><img class="smallOrigamiBlock" src="{{ origami.get_pictures.0.picture.url }}"/></a>
+          <a class="smallOrigamiLink" href="/choose_origami.html/{{ origami.id }}"><img class="smallOrigamiBlock" src="{{ origami.get_pictures.0.picture.url }}"/></a>
           {% endfor %}
         </div>
 	
 	{% for origami in origamis %}
 	<div class="singleOrigamiView">
-          <a class="OrigamiLink" href='choose_origami.html/{{origami.id}}'><img class="bigOrigamiPic" src='{{ origami.get_pictures.0.picture.url }}'/></a>
+          <a class="OrigamiLink" href='/choose_origami.html/{{origami.id}}'><img class="bigOrigamiPic" src='{{ origami.get_pictures.0.picture.url }}'/></a>
           <h1 class="origamiTitle">{{ origami.title }}</h1>
           <h2>Price: ${{ origami.price }}</h2>
 	  <p>{{ origami.description }}</p>
@@ -28,12 +40,14 @@
 	    <li>{{origami.bullet_3}}</li>
 	  </ul>
 	  <br>
-
-        <a href="../choose_recipient.html/{{ origami.id }}">Select This Origami</a>
-        
+	{% if order_id == None %}  
+        <a href="/choose_recipient.html/{{ origami.id }}">Select This Origami</a>
+        {% else %}
+	<a href="/choose_recipient.html/{{ origami.id }}/{{ order_id}}">Select This Origami</a>
+	{% endif %}
         <div class="secondaryOrigamiPics"
 	     {% for image in origami.get_pictures %}
-	     <a href='choose_origamic.html/{{origami.id}}/{{image.id}}'><img src='{{ image.picture.url }}'/></a>
+	     <a href='/choose_origami.html/{{origami.id}}/{{image.id}}'><img src='{{ image.picture.url }}'/></a>
              {% endfor %}
 	</div>
         

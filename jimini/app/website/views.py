@@ -1,7 +1,7 @@
 # Create your views here.
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, Context, loader
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render_to_response, redirect
 
 # import models
 from models import Order, Origami, OrigamiImage, RecipientShippingForm
@@ -18,18 +18,24 @@ def splash_page(request):
 	return render_to_response('index.html',{'origamis': origamis},
                                context_instance=RequestContext(request))
 
-def choose_origami(request):
+def choose_origami(request, origami_id=None, order_id=None):
     ''' This returns the page where the user picks a design '''
     origamis = Origami.objects.all()
-    return render_to_response('choose_origami.html',{'origamis':origamis},
+    if origami_id != None:
+	    print 'hey there partner'
+    else:
+	    print 'none'
+    return render_to_response('choose_origami.html',{'origamis':origamis, 'origami_id':origami_id, 'order_id':order_id},
                                 context_instance=RequestContext(request))
 
 
-def choose_recipient(request, origami_id):
+def choose_recipient(request, origami_id, order_id=None):
 	'''This returns a form where the user picks a recipient
 	and provides shipping information.'''
 
 	origami = Origami.objects.get(id=origami_id)
+	print order_id
+	print order_id == None
 
 	if request.method == "POST":
 		form = RecipientShippingForm(request.POST) # A form bound to the POST data
@@ -44,16 +50,56 @@ def choose_recipient(request, origami_id):
 			zip_code = form.cleaned_data['zip_code']
 			#generate order object with order_id
 			#send use responses to db
-			order = Order(origami_id=origami_id, recipient_name=recipient_name, sender_name=sender_name, 
+			print order_id
+			print order_id == None
+			if order_id == None:
+				print 'new order!'
+				order = Order(origami_id=origami_id, recipient_name=recipient_name, sender_name=sender_name, 
 			              message=message, ship_to_name=ship_to_name, ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code)
-			order.save()
-			#return render_to_response('payment.html', {'order':order}, context_instance=RequestContext(request))
+				order.save()
+			else:
+				print "update order %s" % str(order_id)
+				order = Order.objects.get(id=order_id)
+				order.recipient_name = recipient_name
+				order.sender_name = sender_name
+				order.message = message
+				order.ship_to_name = ship_to_name
+				order.ship_to_address = ship_to_address
+				order.city = city
+				order.state = state
+				order.zip_code = zip_code
+				order.save()
+			return HttpResponseRedirect('/payment.html/%s/%s' % (origami_id, order.id))
+
+	elif order_id != None:
+		print "returning form with values %s" % str(order_id)
+		order = Order.objects.get(id=order_id) 
+		data = {'recipient_name': order.recipient_name,
+			'sender_name': order.sender_name,
+			'message': order.message,
+			'ship_to_name': order.ship_to_name,
+			'ship_to_address': order.ship_to_address,
+			'city': order.city,
+			'state': order.state,
+			'zip_code': order.zip_code}
+		form = RecipientShippingForm(data) #An kinda bounded form - if user wants to edit!
+
 	else:
+		print "returning form without values %s" % str(order_id)
 		form = RecipientShippingForm() # An unbound form
 
-	return render_to_response('choose_recipient.html', {'form':form,'origami':origami,},
+	print order_id
+	return render_to_response('choose_recipient.html', {'form':form,'origami':origami,'order_id':order_id, 'origami_id':origami_id},
 					  context_instance=RequestContext(request))
 
+
+def payment(request, order_id, origami_id):
+	'''This returns the checkout with Amazon page'''
+	origami = Origami.objects.get(id=origami_id)
+	order = Order.objects.get(id=order_id) 
+	return render_to_response('payment.html',{'origami' : origami, 'order':order},
+                               context_instance=RequestContext(request))
+        
 
 def how_this_works(request):
 	return render_to_response('how_it_works.html', {})
