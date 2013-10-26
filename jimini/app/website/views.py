@@ -8,8 +8,21 @@ from models import Order, Origami, OrigamiImage, RecipientShippingForm
 
 # use a hash library to generate email
 import hashlib
+import random
+import os
+
+app_dir = os.path.dirname(__file__) # get current directory
 
 
+# Helper function to generate random email code like 'green-frogs@jimini.co'
+def gen_email_code():
+	existing_codes = Order.objects.values_list('email_code', flat=True)
+	noun_file = open(os.path.join(app_dir, '../../../static/noun_list.txt'),'r')
+	words = [line.strip() for line in noun_file.readlines()]
+	while True:
+		code = random.choice(words) + "-" + random.choice(words)
+		if code not in existing_codes:
+			return code
 
 
 def splash_page(request):
@@ -55,8 +68,9 @@ def choose_recipient(request, origami_id, order_id=None):
 			
 			# If the user is submitting the form for the first time, add the data to the db
 			if order_id == None:
-				order = Order(origami_id=origami_id, recipient_name=recipient_name, sender_name=sender_name, 
-			              message=message, ship_to_name=ship_to_name, ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code)
+				order = Order(origami_id=origami_id, order_status='pre-payment', email_code=gen_email_code(), 
+					      recipient_name=recipient_name, sender_name=sender_name, message=message, ship_to_name=ship_to_name, 
+					      ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code)
 				order.save()
 
 			# otherwise update the data in the db

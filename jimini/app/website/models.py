@@ -4,6 +4,7 @@ from django import forms
 from localflavor.us.forms import USZipCodeField, USStateField
 
 
+
 # This is the old order model which we're not using (but may take elements from later)
 class OLD_Order(models.Model):
 	''' Contains info for order '''
@@ -71,6 +72,9 @@ class RecipientShippingForm(forms.Form):
 class Order(models.Model):
 	user_id = 1
 	order_date = models.DateTimeField(auto_now_add = True)
+	order_status = models.CharField(max_length=100)
+	email_code = models.CharField(max_length=100)
+
 	origami_id = models.PositiveIntegerField()
 
 	recipient_name = models.CharField(max_length=150)
@@ -82,3 +86,5 @@ class Order(models.Model):
 	city = models.CharField(max_length=100)
 	state = models.CharField(max_length=2)
 	zip_code = models.PositiveSmallIntegerField()
+
+
