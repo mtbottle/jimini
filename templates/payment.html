@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Jimini - Checkout with Amazon{% endblock %}
+
+{% block content %}
+<div class="workflowNav">
+  <a href='/choose_origami.html/{{ origami.id }}/{{ order.id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step1.png" %}'/></a>
+  <a href='/choose_recipient.html/{{ origami.id }}/{{ order.id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step2.png" %}'/></a>
+  <img class='workflowSteps' src='{% static "website_parts/homepage/step3.png" %}'/>
+  <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4.png" %}'/>
+</div>
+
+	
+
+<div class="RecipientShipping">
+  <h3>Recipient</h3>
+  <table>
+    <tr>
+      <td class="formlabel">To: </td>
+      <td>{{ order.recipient_name }}</td>
+    </tr>
+    <tr>
+      <td class="formlabel">From: </td>
+      <td>{{ order.sender_name }}</td>
+    </tr>
+    <tr>
+      <td class="formlabel">Message: </td>
+      <td>{{ order.message }}</td>
+    </tr>
+  </table>    
+    <h3>Shipping Details</h3>
+    <table>
+      <tr>
+        <td class="formlabel">Full name: </td>
+        <td id="ship_to_name">{{ order.ship_to_name }}</td>
+      </tr>
+      <tr>
+        <td class="formlabel">Address: </td>
+        <td id="ship_to_address">{{ order.ship_to_address }}</td>
+      </tr>
+      <tr>
+        <td class="formlabel">City: </td>
+        <td id="ship_to_address">{{ order.city }}</td>
+      </tr>
+      <tr>
+        <td class="formlabel">State: </td>
+        <td id="ship_to_address">{{ order.state }}</td>
+      </tr>
+      <tr>
+        <td class="formlabel">Zip code: </td>
+        <td id="ship_to_address">{{ order.zip_code }}</td>
+      </tr>
+      </table>
+    <br>
+    <span><a href="/choose_recipient.html/{{ origami.id }}/{{ order.id }}">Edit</a></span>
+    <br><br>
+</div>
+
+<div class="paymentBox">
+  <div class="innerPaymentBox">
+    <h3>Order Total: ${{ origami.price }}</h3>
+    <img src='{{ origami.get_pictures.0.picture.url }}'/>
+    <a href='/'><h4>Pay with Amazon</h4></a>
+  </div>
+</div>
+
+
+{% endblock %}
