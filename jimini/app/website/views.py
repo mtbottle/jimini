@@ -28,8 +28,17 @@ def choose_origami(request, origami_id=None, order_id=None):
 def choose_recipient(request, origami_id, order_id=None):
 	'''This returns a form where the user picks a recipient
 	and provides shipping information.'''
-
 	origami = Origami.objects.get(id=origami_id)
+	
+	# if the user backtracked and already has an order_id...
+	if order_id != None:
+		order = Order.objects.get(id=order_id)
+		
+		# if the user went back and chose a different origami, update the origami_id
+		if order.origami_id != origami_id:
+			order.origami_id = origami_id
+			order.save()
+
 
 	# if the user fills out the form and clicks "save and continue"
 	if request.method == "POST":
@@ -52,7 +61,6 @@ def choose_recipient(request, origami_id, order_id=None):
 
 			# otherwise update the data in the db
 			else:
-				order = Order.objects.get(id=order_id)
 				order.recipient_name = recipient_name
 				order.sender_name = sender_name
 				order.message = message
