@@ -31,6 +31,7 @@ def choose_recipient(request, origami_id, order_id=None):
 
 	origami = Origami.objects.get(id=origami_id)
 
+	# if the user fills out the form and clicks "save and continue"
 	if request.method == "POST":
 		form = RecipientShippingForm(request.POST) # A form bound to the POST data
 		if form.is_valid():
@@ -42,12 +43,14 @@ def choose_recipient(request, origami_id, order_id=None):
 			city = form.cleaned_data['city']
 			state = form.cleaned_data['state']
 			zip_code = form.cleaned_data['zip_code']
-			#generate order object with order_id
-			#send use responses to db
+			
+			# If the user is submitting the form for the first time, add the data to the db
 			if order_id == None:
 				order = Order(origami_id=origami_id, recipient_name=recipient_name, sender_name=sender_name, 
 			              message=message, ship_to_name=ship_to_name, ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code)
 				order.save()
+
+			# otherwise update the data in the db
 			else:
 				order = Order.objects.get(id=order_id)
 				order.recipient_name = recipient_name
@@ -59,8 +62,11 @@ def choose_recipient(request, origami_id, order_id=None):
 				order.state = state
 				order.zip_code = zip_code
 				order.save()
+
+			# After submitting the form, send user to the payments page
 			return HttpResponseRedirect('/payment.html/%s/%s' % (origami_id, order.id))
 
+	# For a GET request where the user already has an order id, pre-populate the form with his previously filled-in values
 	elif order_id != None:
 		order = Order.objects.get(id=order_id) 
 		data = {'recipient_name': order.recipient_name,
@@ -73,6 +79,7 @@ def choose_recipient(request, origami_id, order_id=None):
 			'zip_code': order.zip_code}
 		form = RecipientShippingForm(data) #An kinda bounded form - if user wants to edit!
 
+	# User is visiting the page for the first time - show him the empty form
 	else:
 		form = RecipientShippingForm() # An unbound form
 

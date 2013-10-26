@@ -4,7 +4,7 @@ from django import forms
 from localflavor.us.forms import USZipCodeField, USStateField
 
 
-# Create your models here.
+# This is the old order model which we're not using (but may take elements from later)
 class OLD_Order(models.Model):
 	''' Contains info for order '''
 	user_email = models.CharField(max_length=100)
@@ -54,7 +54,7 @@ class OrigamiImage(models.Model):
 
 
 
-	
+# This is the form model for the "choose_recipient" page	
 class RecipientShippingForm(forms.Form):
 	recipient_name = forms.CharField(label='Recipient name', max_length=150)
 	sender_name = forms.CharField(label='Sender name', max_length=150)
@@ -67,6 +67,7 @@ class RecipientShippingForm(forms.Form):
 	zip_code = USZipCodeField()
 	
 
+# This is the order model which takes an origami entries from the RecipientShipping form 
 class Order(models.Model):
 	user_id = 1
 	order_date = models.DateTimeField(auto_now_add = True)

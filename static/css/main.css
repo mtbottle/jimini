@@ -1,3 +1,5 @@
+/* these are the highest level css elements for all pages */
+
 body {
         margin:auto;
 	    /*background-image: url('{% static "website_parts/homepage/background.png" %}');
@@ -11,61 +13,6 @@ h2 {
     font-weight: normal;
     font-size: 25px;
 }
-
-.origamiDisplay {
-    height:140px;
-    width:880px;
-    padding-bottom:20px;
-    margin:auto;
-}
-
-.origamiDisplay img {
-    width: 128px; 
-    height: 128px; 
-    float: left; 
-    margin: 8px; 
-    -webkit-transition: margin .5s ease-out; 
-    -moz-transition: margin .5s ease-out; 
-    -o-transition: margin .5s ease-out; 
-} 
-
-.origamiDisplay img:hover { 
-    margin-top: .2px; 
-}
-
-.origamiDisplay img:active {
-    *border: 3px solid #dedede;
-    *margin-right:5px;
-    *margin-left:5px;
-}
-
-
-
-.checkoutOrigamiDisplay {
-  float: right;
-  width: 400px;
-}
-
-
-.RecipientShipping {
-		   float: left;	  
-		   width:400px;
-}
-
-
-.paymentBox {
-	    float: left;
-	    text-align: center;
-	    padding: 30px;
-}
-
-
-.formlabel {
-	   text-align: right;
-	   padding-right:20px;
-}
-
-
 
 header {
     width: 880px;
@@ -91,7 +38,7 @@ footer {
     height:65px;
     padding: 0px;
     padding-top:15px;
-    clear: both;
+    clear:both;
 }
 
 .logo {
@@ -143,16 +90,12 @@ ul {
 }
 
 
-img.center {
-	    width:75%;
-	    max-width: 320px;
-}
 
-.tutorial {
-	    padding-top: 10px;
-	    padding-right: 3px;
-        }
-        
+
+
+/* these are the 4 shopping workflow elements at the top of the page 
+(steps 1-4) that guide user through the checkout process */
+
 .workflowSteps {
     padding-top: 10px;
 	padding-right: 3px;
@@ -175,17 +118,69 @@ img.center {
     padding-bottom:10px
 }
 
-.singleOrigamiView {
-    border-top: solid 1px #dedede;
-    border-bottom: solid 1px #dedede;
-    height: 500px;
+
+
+
+
+/* This is the band of small origami pictures that show up 
+on the index and choose_origami pages */
+
+.origamiDisplay {
+    height:140px;
+    width:880px;
+    padding-bottom:20px;
     margin:auto;
 }
 
+.origamiDisplay img {
+    width: 128px; 
+    height: 128px; 
+    float: left; 
+    margin: 8px; 
+    -webkit-transition: margin .5s ease-out; 
+    -moz-transition: margin .5s ease-out; 
+    -o-transition: margin .5s ease-out; 
+} 
+
+.origamiDisplay img:hover { 
+    margin-top: .2px; 
+}
+
+.origamiDisplay img:active {
+    *border: 3px solid #dedede;
+    *margin-right:5px;
+    *margin-left:5px;
+}
+
+
+
+
+
+
+/* These are the choose_origami elements that display
+the various origamis in greater detail */
+
+.singleOrigamiView {
+    border-top: solid 1px #dedede;
+    *border-bottom: solid 1px #dedede;
+    *background: orange; 
+    margin-bottom:15px;
+    padding: 15px;
+    float: left;
+    width:100%;
+}
+
+.singleOrigamiList {
+		   height: 100%;
+		   width:100%;
+		   margin: 20px;
+		   margin: auto;
+}
 
 .bigOrigamiPic {
     width:350px;
     height: 350px;
+    padding:0px 15px 15px 0px;;
     float:left;
 }
 
@@ -196,7 +191,7 @@ img.center {
 
 .secondaryOrigamiPics img {
     border: solid 1px #dedede;
-	margin-right: 8px;
+    margin: 15px 10px 15px 0px;;
     height:110px;
     width:110px;
 }
@@ -205,4 +200,54 @@ img.center {
 .secondaryOrigamiPics img:hover {
     border: solid 1px #a8a8a8;
 }
+
+
+
+
+
+
+
+
+/* These are the choose_recipient + payment elements
+as the user is completing steps 2-3 of the workflow */
+
+.checkoutOrigamiDisplay {
+  float: right;
+  width: 400px;
+}
+
+
+.RecipientShipping {
+		   float: left;	  
+		   width:400px;
+}
+
+
+.paymentBox {
+	    float: left;
+	    text-align: center;
+	    padding: 30px;
+}
+
+
+.formlabel {
+	   text-align: right;
+	   padding-right:20px;
+}
+
+
+
+
+/* not sure what these are? */
+
+img.center {
+	    width:75%;
+	    max-width: 320px;
+}
+
+.tutorial {
+	    padding-top: 10px;
+	    padding-right: 3px;
+        }
+        
 
