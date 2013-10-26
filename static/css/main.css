@@ -238,6 +238,34 @@ as the user is completing steps 2-3 of the workflow */
 
 
 
+
+
+/* order confirmation page */
+.confirmationBox {
+	    text-align: center;
+	    padding: 30px;
+	    margin: auto;
+}
+
+
+.innerConfirmationBox {
+		      width: 600px;
+		      margin: auto;
+	
+}
+
+.emailcode {
+	   border: solid 3px #dedede;
+	   padding: 15px;
+	   width: 100%;
+	   margin:auto; 
+}
+
+.emailcode h3 {
+	   line-spacing: 50px;
+}
+
+
 /* not sure what these are? */
 
 img.center {

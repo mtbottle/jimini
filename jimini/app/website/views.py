@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 # import models
 from models import Order, Origami, OrigamiImage, RecipientShippingForm
 
-# use a hash library to generate email
+# import helpful libraries
 import hashlib
 import random
 import os
@@ -26,17 +26,21 @@ def gen_email_code():
 			return code
 
 
+
 def splash_page(request):
 	''' This will return the splash page for index '''
 	origamis = Origami.objects.all()
 	return render_to_response('index.html',{'origamis': origamis},
                                context_instance=RequestContext(request))
 
+
+
 def choose_origami(request, origami_id=None, order_id=None):
     ''' This returns the page where the user picks a design '''
     origamis = Origami.objects.all()
     return render_to_response('choose_origami.html',{'origamis':origamis, 'origami_id':origami_id, 'order_id':order_id},
                                 context_instance=RequestContext(request))
+
 
 
 def choose_recipient(request, origami_id, order_id=None):
@@ -100,7 +104,7 @@ def choose_recipient(request, origami_id, order_id=None):
 			'city': order.city,
 			'state': order.state,
 			'zip_code': order.zip_code}
-		form = RecipientShippingForm(data) #An kinda bounded form - if user wants to edit!
+		form = RecipientShippingForm(data) #A sort of bounded form - if user wants to edit!
 
 	# User is visiting the page for the first time - show him the empty form
 	else:
@@ -110,13 +114,25 @@ def choose_recipient(request, origami_id, order_id=None):
 					  context_instance=RequestContext(request))
 
 
+
 def payment(request, order_id, origami_id):
 	'''This returns the checkout with Amazon page'''
 	origami = Origami.objects.get(id=origami_id)
 	order = Order.objects.get(id=order_id) 
 	return render_to_response('payment.html',{'origami' : origami, 'order':order},
                                context_instance=RequestContext(request))
-        
+
+
+
+def confirmation(request, order_id):
+	'''This returns the order confirmation page with email code'''
+	order = Order.objects.get(id=order_id) 
+	order.order_status = 'paid'
+	order.save()
+	return render_to_response('confirmation.html',{'order':order},
+                               context_instance=RequestContext(request))
+
+
 
 def how_this_works(request):
 	return render_to_response('how_it_works.html', {})

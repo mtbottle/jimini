@@ -61,9 +61,8 @@
   <div class="innerPaymentBox">
     <h3>Order Total: ${{ origami.price }}</h3>
     <img src='{{ origami.get_pictures.0.picture.url }}'/>
-    <a href='/'><h4>Pay with Amazon</h4></a>
+    <a href='/confirmation.html/{{ order.id }}'><h4>Pay with Amazon</h4></a>
   </div>
 </div>
-
 
 {% endblock %}
