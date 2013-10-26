@@ -21,10 +21,6 @@ def splash_page(request):
 def choose_origami(request, origami_id=None, order_id=None):
     ''' This returns the page where the user picks a design '''
     origamis = Origami.objects.all()
-    if origami_id != None:
-	    print 'hey there partner'
-    else:
-	    print 'none'
     return render_to_response('choose_origami.html',{'origamis':origamis, 'origami_id':origami_id, 'order_id':order_id},
                                 context_instance=RequestContext(request))
 
@@ -34,8 +30,6 @@ def choose_recipient(request, origami_id, order_id=None):
 	and provides shipping information.'''
 
 	origami = Origami.objects.get(id=origami_id)
-	print order_id
-	print order_id == None
 
 	if request.method == "POST":
 		form = RecipientShippingForm(request.POST) # A form bound to the POST data
@@ -50,15 +44,11 @@ def choose_recipient(request, origami_id, order_id=None):
 			zip_code = form.cleaned_data['zip_code']
 			#generate order object with order_id
 			#send use responses to db
-			print order_id
-			print order_id == None
 			if order_id == None:
-				print 'new order!'
 				order = Order(origami_id=origami_id, recipient_name=recipient_name, sender_name=sender_name, 
 			              message=message, ship_to_name=ship_to_name, ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code)
 				order.save()
 			else:
-				print "update order %s" % str(order_id)
 				order = Order.objects.get(id=order_id)
 				order.recipient_name = recipient_name
 				order.sender_name = sender_name
@@ -72,7 +62,6 @@ def choose_recipient(request, origami_id, order_id=None):
 			return HttpResponseRedirect('/payment.html/%s/%s' % (origami_id, order.id))
 
 	elif order_id != None:
-		print "returning form with values %s" % str(order_id)
 		order = Order.objects.get(id=order_id) 
 		data = {'recipient_name': order.recipient_name,
 			'sender_name': order.sender_name,
@@ -85,10 +74,8 @@ def choose_recipient(request, origami_id, order_id=None):
 		form = RecipientShippingForm(data) #An kinda bounded form - if user wants to edit!
 
 	else:
-		print "returning form without values %s" % str(order_id)
 		form = RecipientShippingForm() # An unbound form
 
-	print order_id
 	return render_to_response('choose_recipient.html', {'form':form,'origami':origami,'order_id':order_id, 'origami_id':origami_id},
 					  context_instance=RequestContext(request))
 
