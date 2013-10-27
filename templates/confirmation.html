@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Jimini - Shop for your digital gift on Amazon!{% endblock %}
+
+{% block content %}
+<div class="workflowNav">
+  <a href='/choose_origami.html'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step1.png" %}'/></a>
+  <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step2.png" %}'/>
+  <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/>
+  <img class='workflowSteps' src='{% static "website_parts/homepage/step4.png" %}'/>
+</div>
+
+
+<div class="confirmationBox">
+  <div class="innerConfirmationBox">
+    <h2>Congratulations! Your order was received.</h2>
+    <div class="emailcode"><h3>Your order code:<br><u>{{ order.email_code }}@jimini.co</u></h3></div>
+    <p>Have your digital gift sent to <u>{{ order.email_code }}@jimini.co</u> when you make your purchase. Once we receive the email, Jimini will hide the download link inside your chosen origami before we wrap it.</p><p>We will also send the download link to your email address as backup.</p>
+    <a href='http://www.amazon.com'><h4>Shop on Amazon</h4></a>
+  </div>
+</div>
+
+
+{% endblock %}

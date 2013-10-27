@@ -1,0 +1,286 @@
+/* these are the highest level css elements for all pages */
+
+body {
+        margin:auto;
+	    /*background-image: url('{% static "website_parts/homepage/background.png" %}');
+		background-repeat: repeat;*/
+	    font-family:'Orienta', sans-serif;  
+        padding:0px;
+        color:#818181;
+}
+
+h2 {
+    font-weight: normal;
+    font-size: 25px;
+}
+
+header {
+    width: 880px;
+    margin: auto;
+    margin-top:10px;
+    *background: purple;
+    margin-bottom:20px;
+}
+
+.container {
+    border: 0px;
+    *background: orange;
+    margin: auto;
+    width:880px;
+    margin-bottom: 0px;
+}
+
+footer {
+    border-top: solid 1px #dedede;
+    width:880px;
+    margin: auto;
+    *background: blue;
+    height:65px;
+    padding: 0px;
+    padding-top:15px;
+    clear:both;
+}
+
+.logo {
+    
+}
+
+.facebook {
+    float:right;
+    height:100%;
+}
+
+.facebook > iframe {
+    width:265px;
+    text-align: right;
+}
+
+.topnav {
+    margin: auto;
+}
+
+.nav {
+    color:#a9a9a9;
+    *background: green;
+    text-align: left;
+    font-family:'Orienta', sans-serif;
+	font-size: 15px;
+}
+
+ul {
+    list-style-type: none;
+    padding:0px;
+    margin: 0px;
+}
+
+.nav > li {
+    display: inline;
+    margin-left:33px;
+    
+        }
+
+.nav > li > a {
+      color:#a9a9a9;
+      text-decoration: none;
+}
+
+.nav > li > a:hover {
+      color:#818181;
+      text-decoration: none;
+}
+
+
+
+
+
+/* these are the 4 shopping workflow elements at the top of the page 
+(steps 1-4) that guide user through the checkout process */
+
+.workflowSteps {
+    padding-top: 10px;
+	padding-right: 3px;
+	height:100px;
+	width: 213px;
+}
+
+.workflowSteps_grey {
+    	padding-top: 10px;
+	padding-right: 3px;
+	height:100px;
+	width: 213px;
+	opacity: 0.4;
+    	filter: alpha(opacity=40); /* msie */	
+}
+
+
+.workflowNav {
+    border-bottom: solid 1px #dedede;
+    padding-bottom:10px
+}
+
+
+
+
+
+/* This is the band of small origami pictures that show up 
+on the index and choose_origami pages */
+
+.origamiDisplay {
+    height:140px;
+    width:880px;
+    padding-bottom:20px;
+    margin:auto;
+}
+
+.origamiDisplay img {
+    width: 128px; 
+    height: 128px; 
+    float: left; 
+    margin: 8px; 
+    -webkit-transition: margin .5s ease-out; 
+    -moz-transition: margin .5s ease-out; 
+    -o-transition: margin .5s ease-out; 
+} 
+
+.origamiDisplay img:hover { 
+    margin-top: .2px; 
+}
+
+.origamiDisplay img:active {
+    *border: 3px solid #dedede;
+    *margin-right:5px;
+    *margin-left:5px;
+}
+
+
+
+
+
+
+/* These are the choose_origami elements that display
+the various origamis in greater detail */
+
+.singleOrigamiView {
+    border-top: solid 1px #dedede;
+    *border-bottom: solid 1px #dedede;
+    *background: orange; 
+    margin-bottom:15px;
+    padding: 15px;
+    float: left;
+    width:100%;
+}
+
+.singleOrigamiList {
+		   height: 100%;
+		   width:100%;
+		   margin: 20px;
+		   margin: auto;
+}
+
+.bigOrigamiPic {
+    width:350px;
+    height: 350px;
+    padding:0px 15px 15px 0px;;
+    float:left;
+}
+
+.origamiTitle {
+    text-align: left;
+}
+
+
+.secondaryOrigamiPics img {
+    border: solid 1px #dedede;
+    margin: 15px 10px 15px 0px;;
+    height:110px;
+    width:110px;
+}
+
+
+.secondaryOrigamiPics img:hover {
+    border: solid 1px #a8a8a8;
+}
+
+
+
+
+
+
+
+
+/* These are the choose_recipient + payment elements
+as the user is completing steps 2-3 of the workflow */
+
+
+.error {
+       color:red;
+}
+
+.checkoutOrigamiDisplay {
+  float: right;
+  width: 400px;
+}
+
+
+.RecipientShipping {
+		   float: left;	  
+		   width:400px;
+}
+
+
+.paymentBox {
+	    float: left;
+	    text-align: center;
+	    padding: 30px;
+}
+
+
+.formlabel {
+	   text-align: right;
+	   padding-right:20px;
+}
+
+
+
+
+
+
+/* order confirmation page */
+.confirmationBox {
+	    text-align: center;
+	    padding: 30px;
+	    margin: auto;
+}
+
+
+.innerConfirmationBox {
+		      width: 600px;
+		      margin: auto;
+	
+}
+
+.emailcode {
+	   border: solid 3px #dedede;
+	   padding: 15px;
+	   width: 100%;
+	   margin:auto; 
+}
+
+.emailcode h3 {
+	   line-spacing: 50px;
+}
+
+
+/* not sure what these are? */
+
+img.center {
+	    width:75%;
+	    max-width: 320px;
+}
+
+.tutorial {
+	    padding-top: 10px;
+	    padding-right: 3px;
+        }
+        
+

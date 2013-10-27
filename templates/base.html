@@ -5,85 +5,76 @@
   <head>
     <title>{% block title %}{% endblock %} - Jimini</title>
     <!-- Bootstrap -->
-	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+	<!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">-->
 	<link href='http://fonts.googleapis.com/css?family=Orienta' rel='stylesheet' type='text/css'>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js" type="text/javascript"></script>
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+	<!--<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>-->
 	
-	<style type="text/css">
-		body {
-			padding-top: 60px;
-			padding-bottom: 40px;
-			background-image: url('{% static "website_parts/homepage/background.png" %}');
-			background-repeat: repeat;
-			text-align: center;
-		}
-
-		.navbar .nav,
-		.navbar .nav > li {
-			float:none;
-			display:inline-block;
-			*display:inline; /* ie7 fix */
-			*zoom:1; /* hasLayout ie7 trigger */
-			vertical-align: top;
-			font-family: 'Orienta', sans-serif;
-			font-size: 18px;
-			padding-left: 34px;
-			padding-right: 27px;
-			padding-top: 15px;
-		}
-
-		.navbar-inner {
-			text-align:center;
-		}
-
-		img.center {
-			display: block;
-			margin-left: auto;
-			margin-right: auto;
-		}
-
-		.tutorial {
-			padding-top: 10px;
-			padding-bottom: 10px;
-			padding-right: 3px;
-		}
-
-    </style>
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
   </head>
   <body>
+  
+  <header>
+    <div id="amazon-root"></div>
+    <script type="text/javascript">
+    
+      window.onAmazonLoginReady = function() {
+        amazon.Login.setClientId('amzn1.application-oa2-client.8b29ce13f5444fb783556d29ad0216e1');
+      };
+      (function(d) {
+        var a = d.createElement('script'); a.type = 'text/javascript';
+        a.async = true; a.id = 'amazon-login-sdk';
+        a.src = 'https://api-cdn.amazon.com/sdk/login1.js?v=3';
+        d.getElementById('amazon-root').appendChild(a);
+      })(document);
+    
+    </script>
+    
+    <a class="logo" href="/"><img class="center" src="{% static 'logos/logo620x300.png' %}" /></a>
+    
+    <div class="topnav" style="float:right;">
+        <ul class="nav" style="padding-top:5px";>
+			    <li class='span1'><a href='http://www.facebook.com/jimini.co'>About</a></li>
+			    <li class='span1'><a href="#" id="LoginWithAmazon">Login</a></li>
+			    <li class='span1'><a href="mailto:jimini.origami@gmail.com">Contact</a></li>
+		</ul>   
+    </div>
 
-	<a class="brand" href="../"><img class="center" src="{% static 'website_parts/homepage/logo.png' %}" /></a>
-
-	<div class="navbar">
-		<ul class="nav">
-			<li class='span2'><a href='http://www.facebook.com/jimini.co'>About</a></li>
-			<li class='span2'><a href='{% url how_this_works %}'>How this works</a></li>
-			<li class='span2'>
-				<a href= "https://www.dailycred.com/connect?identity_provider=email
-&client_id=3a71952c-8709-4111-9266-16e40b0d1399&redirect_uri=jimini.co" disabled='true'>Sign-in/Register</a></li>
-			<li class='span2'><a href="mailto:jimini.origami@gmail.com">Contact us</a></li>
-		</ul>
-	</div>
-
+    </header>
 
     <div class="container">
+
 		{% block content %}
 		{% endblock %}
-	<hr>
-		<footer>
-			<div class='span3' style='float:right;text-align:left'>
-				<a class="twitter-timeline" href="https://twitter.com/jimini_co">Follow @jimini_co on Twitter!</a>
-				<iframe src="http://www.facebook.com/plugins/like.php?href=http://www.facebook.com/jimini.co"
-				scrolling="no" frameborder="0"
-				style="border:none; width:450px; height:80px"></iframe>
-			</div>
-			<p class='span3' style='float:left;'>&copy; Jimini 2012 </p>
-		</footer>
 		
     </div> <!-- /container -->
 
 
+
+	<footer>
+			<div class="facebook">
+				<!--<a class="twitter-timeline" href="https://twitter.com/jimini_co">Follow @jimini_co on Twitter!</a>-->
+				<iframe src="http://www.facebook.com/plugins/like.php?href=http://www.facebook.com/jimini.co"
+				scrolling="no" frameborder="0"></iframe>
+			</div>
+			<div class="navlinks">
+		    <ul class="nav">
+		        &copy; Jimini 2013
+			    <li><a href='http://www.facebook.com/jimini.co'>About</a></li>
+			    <li><a href="#" id="LoginWithAmazon">Shop</a></li>
+			    <li><a href="mailto:jimini.origami@gmail.com">Contact</a></li>
+		    </ul>
+		    </div>
+	</footer>
 </body>
+<script type="text/javascript">
+
+  document.getElementById('LoginWithAmazon').onclick = function() {
+    options = { scope : 'profile' };
+    amazon.Login.authorize(options,  window.location.origin + '/handle_login');
+    return false;
+  };
+
+</script>
 </html>

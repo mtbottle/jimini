@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Jimini - Select your origami design!{% endblock %}
+
+{% block content %}
+
+
+<!-- This is the top workflow naviation with the 4 steps -->
+<div class="workflowNav">
+  <img class='workflowSteps' src='{% static "website_parts/homepage/step1.png" %}'/>
+  
+  {% if origami_id == None %}  
+  <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step2.png" %}'/>
+  <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/>
+  
+  {% elif order_id == None %}
+  <a href='/choose_recipient.html/{{ origami_id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step2.png" %}'/></a>
+  <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/>
+  
+  {% else %}
+  <a href='/choose_recipient.html/{{ origami_id }}/{{ order_id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step2.png" %}'/></a>
+  <a href='/payment.html/{{ origami_id }}/{{ order_id }}'><img class='workflowSteps_grey' src='{% static "website_parts/homepage/step3.png" %}'/></a>
+  
+  {% endif %}
+     <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4.png" %}'/>
+</div>
+
+
+<!-- This is the top origami band that shows the various origamis to choose from --> 
+        <div class="origamiDisplay">
+	  {% for origami in origamis %}
+          <a class="smallOrigamiLink" href="/choose_origami.html/{{ origami.id }}"><img class="smallOrigamiBlock" src="{{ origami.get_pictures.0.picture.url }}"/></a>
+          {% endfor %}
+        </div>
+
+
+<!-- This is the large description of each origmi that we will animate with javascript -->	
+	<div class='singleOrigamiList'>
+	  {% for origami in origamis %}
+	  <div class="singleOrigamiView">
+            <a class="OrigamiLink" href='/choose_origami.html/{{origami.id}}'><img class="bigOrigamiPic" src='{{ origami.get_pictures.0.picture.url }}'/></a>
+            <h1 class="origamiTitle">{{ origami.title }}</h1>
+            <h2>Price: ${{ origami.price }}</h2>
+	    <p>{{ origami.description }}</p>
+            <ul>
+	      <li>{{origami.bullet_1}}</li>
+	      <li>{{origami.bullet_2}}</li>
+	      <li>{{origami.bullet_3}}</li>
+	    </ul>
+	    <br>
+	    {% if order_id == None %}  
+            <a href="/choose_recipient.html/{{ origami.id }}">Select This Origami</a>
+            {% else %}
+	    <a href="/choose_recipient.html/{{ origami.id }}/{{ order_id}}">Select This Origami</a>
+	    {% endif %}
+	    
+	    <!-- These are the secondary origami pics for each origami profile - when user clicks we should rotate out the main -->
+            <div class="secondaryOrigamiPics"
+		 {% for image in origami.get_pictures %}
+		 <a href='/choose_origami.html/{{origami.id}}/{{image.id}}'><img src='{{ image.picture.url }}'/></a>
+		 {% endfor %}
+	    </div>
+          
+	  </div><!-- This is the end of the singleOrigamiView div -->
+	  {% endfor %}
+	</div><!--This is the end of the singleOrigamiList container div-->
+
+{% endblock %}
