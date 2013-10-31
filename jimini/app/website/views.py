@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from models import Order, Origami, OrigamiImage, RecipientShippingForm
 
 # import helpful libraries
+import sendmail
 import hashlib
 import random
 import os
@@ -119,7 +120,16 @@ def payment(request, order_id, origami_id):
 	'''This returns the checkout with Amazon page'''
 	origami = Origami.objects.get(id=origami_id)
 	order = Order.objects.get(id=order_id) 
-	return render_to_response('payment.html',{'origami' : origami, 'order':order},
+	
+	# This is just a placeholder until Thibaut adds payment api
+	if request.method == "POST":
+
+		# Redirect to confirmation page
+		return HttpResponseRedirect('/confirmation.html/%s' % order.id)
+	
+	# Load page for normal GET request
+	else:
+		return render_to_response('payment.html',{'origami' : origami, 'order':order},
                                context_instance=RequestContext(request))
 
 
@@ -127,8 +137,22 @@ def payment(request, order_id, origami_id):
 def confirmation(request, order_id):
 	'''This returns the order confirmation page with email code'''
 	order = Order.objects.get(id=order_id) 
+	origami = Origami.objects.get(id=order.origami_id)
+	# user = User.objects.get(id=order.user_id)
+	
+	# Change order_status to 'paid'
 	order.order_status = 'paid'
 	order.save()
+
+	# Send order confirmation email
+	first_name = 'Brendan' #user.first_name
+	email_to = 'bfortuner@gmail.com' #user.email
+
+	origami_price = origami.price
+	origami_title = origami.title
+	
+	order.confirmation_email(first_name, email_to, origami_price, origami_title)
+
 	return render_to_response('confirmation.html',{'order':order},
                                context_instance=RequestContext(request))
 

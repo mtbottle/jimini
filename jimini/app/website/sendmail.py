@@ -2,6 +2,7 @@ from email.mime.text import MIMEText
 from subprocess import Popen, PIPE
 from jinja2 import Environment, FileSystemLoader
 import os
+
 app_dir = os.path.dirname(__file__) # get current directory 
 
 template_dir = os.path.join(app_dir, '../../../templates/email_templates')
@@ -25,5 +26,8 @@ def send_jimini_email(email_from, email_to, subject, html):
 	p = Popen(['/usr/sbin/sendmail', '-t'], stdin=PIPE)
 	p.communicate(msg.as_string())
 
+
+'''
 if __name__ == '__main__':
 	send_jimini_email(email_from, email_to, subject, html)
+'''
