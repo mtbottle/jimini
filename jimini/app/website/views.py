@@ -211,7 +211,7 @@ def handle_login(request):
          
         print "%s %s %s"%(user['name'], user['email'], user['user_id'])
     
-	return render_to_response('index.html',{"user": user},
+	return render_to_response('index.html',{"amazonUser": user},
                                context_instance=RequestContext(request))
 
 def origamis(request):
