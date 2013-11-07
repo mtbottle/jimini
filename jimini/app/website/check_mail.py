@@ -7,28 +7,32 @@ from subprocess import Popen, PIPE
 from jinja2 import Environment, FileSystemLoader
 import sys, os
 import re
-
+import sendmail
 
 app_dir = os.path.dirname(__file__) # get current directory 
 
+''' Need help here - import existing Django models '''
 #sys.path.append("/Users/bfortuner/workplace/jimini/jimini/jimini")
 #os.environ["DJANGO_SETTINGS_MODULE"] = settings
-
 #from models import Order, Origami, OrigamiImage, RecipientShippingForm
+
 
 # Load Jinja email templates
 template_dir = os.path.join(app_dir, '../../../templates/email_templates')
 loader = FileSystemLoader(template_dir)
 env = Environment(loader=loader)
 
+
 # Temporary login info for personal gmail account
 username = 'bfortuner' #'cricket@jimini.co'
 password = 'brendan90' #'Cricket@SW2012'
+
 
 # Temporary overrides for testing
 email_from = 'bfortuner@gmail.com'
 email_to = 'bfortuner@gmail.com'
 subject = "Your Jimini Order!"
+
 
 
 def connect_email_server():
@@ -40,11 +44,16 @@ def connect_email_server():
 
 
 
-def forward_email(msg, to):
-	pass
+def forward_email(msg, to_email):
+	''' Forward gift email received from Amazon or Google'''
+	for part in msg.walk():
+		if part.get_content_type() == 'text/html':
+			body = part.get_payload(decode=True)
+
+	sendmail.send_jimini_email('confirmation@jimini.co', to_email, 'Your Amazon Gift From Jimini', body)
 
 
-
+			
 def check_inbox(server):
 	''' Check inbox for new Jimini orders '''
 
@@ -60,29 +69,40 @@ def check_inbox(server):
 		for response_part in msg_data:
 			if isinstance(response_part, tuple):
 				msg = email.message_from_string(response_part[1])
-				email_list.append(msg)
-	return email_list
+       				email_list.append(msg)
+	return email_list, server
 
 
-	
-def extract_order_code(email_list):
+
+######  Need help connecting to models.py to finalize this function  ######	
+
+def extract_order_code(email_list, server):
 	'''Extract order codes from list of emails'''
-	for msg in email_list:
-		email_code = re.search(r'<([A-Za-z0-9]+)@', msg['from']).group(1)
-		print email_code
-		order = Order.objects.get(order_code=email_code)
-		# check if code is in DB
-		if order != None:
-			print 'match'
-		else:
-			print 'no match'
+	# Check is list is empty
+	if len(email_list[0]) > 0:
+		for msg in email_list[0]:
 
-		# if order code in DB, forward email to user and change order status to "gift received" 
+			email_code = re.search(r'<([A-Za-z0-9]+)@', msg['from']).group(1)
 
-	#order.order_status = 'paid'
-        #order.save()
-	#order.confirmation_email(first_name, email_to, origami_price, origami_title)
+			#order = Order.objects.get(order_code=email_code)
+			order = 'lalala'
+			# check if code is in DB
+			if order != None:
+				# Update order status to 'gift received'
+				# order.order_status = 'paid'
+				# order.save()
+				
+				# Send gift received email! 
+				first_name = 'Brendan'
+				email_to = 'bfortuner@gmail.com'
+				# order.gift_received_email(first_name, email_to)
+				sendmail.send_jimini_email('confirmation@jimini.co', email_to, 'Jimini received your digital gift', 'hey there mister')
+				
+				# Forward Amazon Gift Email
+				forward_email(msg, email_to)
 
+			else:
+				pass
 
  	# Logout
 	server.close()
@@ -91,9 +111,17 @@ def extract_order_code(email_list):
 
 
 
+if __name__ == '__main__':
+	server = connect_email_server()
+	extract_order_code(check_inbox(server), server)
+
+
+
+
+
+#### Example Functions from IMAPlib ####
 
 def IMAP_example_fuctions():
-
 	# Open the connection
 	server = connect_email_server()
 	print "connected!"
@@ -101,7 +129,6 @@ def IMAP_example_fuctions():
 	# Shows you the name of all the mailboxes
 	# print server.list()
 	
-
 	# Select "INBOX" mailbox
 	typ, data = server.select("INBOX")
 
@@ -119,7 +146,6 @@ def IMAP_example_fuctions():
 	#msg_ids = server.search(None, "(FROM 'bfortuner@gmail.com' SUBJECT 'hey')")
 	#message_list = msg_ids[1][0].split()
 	#print message_list
-
 
 	# Loop through message id list and extract data
 	'''
@@ -142,15 +168,5 @@ def IMAP_example_fuctions():
 				for header in [ 'subject', 'to', 'from' ]:
 					print '%-8s: %s' % (header.upper(), msg[header])
 					'''
-					
-	# Logout
-	server.close()
-	server.logout()
 
-
-
-if __name__ == '__main__':
-	server = connect_email_server()
-	extract_order_code(check_inbox(server))
-#send_jimini_email(email_from, email_to, subject, html)
 
