@@ -18,6 +18,83 @@
 </div>
 
 	
+	<div id="AmazonPayButton"/>
+    <script type="text/javascript">
+     var authRequest;
+     OffAmazonPayments.Button("AmazonPayButton", "A2OSAYU8Y178Y0", {
+     type: "PwA",
+     useAmazonAddressBook: true,
+     authorization: function() {
+     loginOptions =
+     {scope: "profile payments:widget payments:shipping_address"};
+     authRequest = amazon.Login.authorize(loginOptions);
+     },
+     onSignIn: function(orderReference) {
+     // The following OAuth 2 response parameters will be included in
+     // the query string when the customer's browser is redirected to
+     // the URL below: access_token, token_type, expires_in, and scope.
+     authRequest.onComplete("/choose_recipient.html/{{ origami.id }}?session="
+     + orderReference.getAmazonOrderReferenceId());
+     },
+     onError: function(error) {
+     // your error handling code
+     }
+     });
+    </script>
+    
+    <script>
+    var wallet = function() {
+    new OffAmazonPayments.Widgets.Wallet({
+     sellerId: 'A2OSAYU8Y178Y0',
+     amazonOrderReferenceId: '{{ amazonOrderReferenceId }}', 
+     // amazonOrderReferenceId obtained from Button widget
+     design: {
+     size : {width:'400px', height:'260px'}
+     },
+     onPaymentSelect: function(orderReference) {
+     // Replace this code with the action that you want to perform
+     // after the payment method is selected.
+     },
+     onError: function(error) {
+     // your error handling code
+     }
+    }).bind("walletWidgetDiv");
+    }
+    </script>
+        
+    
+    <div id="addressBookWidgetDiv">
+    </div> 
+    <script>
+    new OffAmazonPayments.Widgets.AddressBook({
+     sellerId: 'A2OSAYU8Y178Y0',
+     amazonOrderReferenceId: '{{ amazonOrderReferenceId }}', 
+     // amazonOrderReferenceId obtained from Button widget
+     onAddressSelect: function(orderReference) {
+     // Replace the following code with the action that you want to perform 
+     // after the address is selected.
+     // The amazonOrderReferenceId can be used to retrieve 
+     // the address details by calling the GetOrderReferenceDetails
+     // operation. If rendering the AddressBook and Wallet widgets on the
+     // same page, you should wait for this event before you render the
+     // Wallet widget for the first time.
+     
+     wallet();
+     
+     },
+     design: {
+     size : {width:'400px', height:'260px'}
+     },
+     onError: function(error) {
+     // your error handling code
+     }
+    }).bind("addressBookWidgetDiv");
+    </script>
+
+    <div id="walletWidgetDiv">
+    </div>
+
+	
 
 <div class="RecipientShipping">
   <h3>Select Recipient</h3>

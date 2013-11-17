@@ -32,15 +32,15 @@ def splash_page(request):
 	''' This will return the splash page for index '''
 	origamis = Origami.objects.all()
 	return render_to_response('index.html',{'origamis': origamis},
-                               context_instance=RequestContext(request))
+							   context_instance=RequestContext(request))
 
 
 
 def choose_origami(request, origami_id=None, order_id=None):
-    ''' This returns the page where the user picks a design '''
-    origamis = Origami.objects.all()
-    return render_to_response('choose_origami.html',{'origamis':origamis, 'origami_id':origami_id, 'order_id':order_id},
-                                context_instance=RequestContext(request))
+	''' This returns the page where the user picks a design '''
+	origamis = Origami.objects.all()
+	return render_to_response('choose_origami.html',{'origamis':origamis, 'origami_id':origami_id, 'order_id':order_id},
+								context_instance=RequestContext(request))
 
 
 
@@ -75,8 +75,8 @@ def choose_recipient(request, origami_id, order_id=None):
 			# If the user is submitting the form for the first time, add the data to the db
 			if order_id == None:
 				order = Order(origami_id=origami_id, order_status='pre-payment', email_code=gen_email_code(), 
-					      recipient_name=recipient_name, sender_name=sender_name, message=message, ship_to_name=ship_to_name, 
-					      ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code)
+						  recipient_name=recipient_name, sender_name=sender_name, message=message, ship_to_name=ship_to_name, 
+						  ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code)
 				order.save()
 
 			# otherwise update the data in the db
@@ -110,13 +110,34 @@ def choose_recipient(request, origami_id, order_id=None):
 	# User is visiting the page for the first time - show him the empty form
 	else:
 		form = RecipientShippingForm() # An unbound form
+		
+	amazonOrderReferenceId = ""
+	if request.GET.has_key("session"): amazonOrderReferenceId = str(request.GET["session"])
 
-	return render_to_response('choose_recipient.html', {'form':form,'origami':origami,'order_id':order_id, 'origami_id':origami_id},
+	return render_to_response('choose_recipient.html', {'form':form, 'origami':origami, 'order_id':order_id, 'origami_id':origami_id, 'amazonOrderReferenceId': amazonOrderReferenceId},
 					  context_instance=RequestContext(request))
 
 
 
 def payment(request, order_id, origami_id):
+	from mws import MWS
+	
+	mws = MWS(access_key="AKIAJXQZJU2XOOX326JQ",secret_key="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",account_id="A2OSAYU8Y178Y0",uri="/OffAmazonPayments_Sandbox/2013-01-01",version="2013-01-01")
+	
+	params = {}
+	params["OrderReferenceAttributes.OrderTotal.Amount"] = "10"
+	params["OrderReferenceAttributes.OrderTotal.CurrencyCode"] = "USD"
+	params["OrderReferenceAttributes.SellerNote"] = "Origamis"
+	params["OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId"] = "4"
+	
+	data = dict(Action='SetOrderReferenceDetails',
+					SellerId="A2OSAYU8Y178Y0",
+					AmazonOrderReferenceId="S01-1307655-0382402")
+					
+	data.update(params)
+
+	print mws.make_request(data)
+	
 	'''This returns the checkout with Amazon page'''
 	origami = Origami.objects.get(id=origami_id)
 	order = Order.objects.get(id=order_id) 
@@ -130,7 +151,7 @@ def payment(request, order_id, origami_id):
 	# Load page for normal GET request
 	else:
 		return render_to_response('payment.html',{'origami' : origami, 'order':order},
-                               context_instance=RequestContext(request))
+							   context_instance=RequestContext(request))
 
 
 
@@ -154,7 +175,7 @@ def confirmation(request, order_id):
 	order.confirmation_email(first_name, email_to, origami_price, origami_title)
 
 	return render_to_response('confirmation.html',{'order':order},
-                               context_instance=RequestContext(request))
+							   context_instance=RequestContext(request))
 
 
 
@@ -164,66 +185,66 @@ def how_this_works(request):
 
 
 def wrap_page(request,coupon):
-        origami = get_object_or_404(Origami, pk=1)
+	origami = get_object_or_404(Origami, pk=1)
 	''' This will return the wrap your gift page '''
 	return render_to_response('wrap.html',{'coupon' : coupon},
-                               context_instance=RequestContext(request))
-                
-                
-                               
+							   context_instance=RequestContext(request))
+				
+				
+							   
 def handle_login(request):
-    ''' Source http://login.amazon.com/website '''
-    
-    import pycurl
-    import urllib
-    import json
-    import StringIO
-    
-    b = StringIO.StringIO()
-    
-    if request.GET.has_key("access_token"):
-        access_token = str(request.GET["access_token"])
-        
-        # verify that the access token belongs to us
-        c = pycurl.Curl()
-        c.setopt(pycurl.URL, "https://api.amazon.com/auth/o2/tokeninfo?access_token=" + urllib.quote_plus(access_token))
-        c.setopt(pycurl.SSL_VERIFYPEER, 1)
-        c.setopt(pycurl.WRITEFUNCTION, b.write)
-         
-        c.perform()
-        d = json.loads(b.getvalue())
-         
-        if d['aud'] != 'amzn1.application-oa2-client.8b29ce13f5444fb783556d29ad0216e1' :
-            # the access token does not belong to us
-            raise BaseException("Invalid Token")
-         
-        # exchange the access token for user profile
-        b = StringIO.StringIO()
-         
-        c = pycurl.Curl()
-        c.setopt(pycurl.URL, "https://api.amazon.com/user/profile")
-        c.setopt(pycurl.HTTPHEADER, ["Authorization: bearer " + access_token])
-        c.setopt(pycurl.SSL_VERIFYPEER, 1)
-        c.setopt(pycurl.WRITEFUNCTION, b.write)
-         
-        c.perform()
-        user = json.loads(b.getvalue())
-         
-        print "%s %s %s"%(user['name'], user['email'], user['user_id'])
-    
+	''' Source http://login.amazon.com/website '''
+	
+	import pycurl
+	import urllib
+	import json
+	import StringIO
+	
+	b = StringIO.StringIO()
+	
+	if request.GET.has_key("access_token"):
+		access_token = str(request.GET["access_token"])
+		
+		# verify that the access token belongs to us
+		c = pycurl.Curl()
+		c.setopt(pycurl.URL, "https://api.amazon.com/auth/o2/tokeninfo?access_token=" + urllib.quote_plus(access_token))
+		c.setopt(pycurl.SSL_VERIFYPEER, 1)
+		c.setopt(pycurl.WRITEFUNCTION, b.write)
+		 
+		c.perform()
+		d = json.loads(b.getvalue())
+		 
+		if d['aud'] != 'amzn1.application-oa2-client.8b29ce13f5444fb783556d29ad0216e1' :
+			# the access token does not belong to us
+			raise BaseException("Invalid Token")
+		 
+		# exchange the access token for user profile
+		b = StringIO.StringIO()
+		 
+		c = pycurl.Curl()
+		c.setopt(pycurl.URL, "https://api.amazon.com/user/profile")
+		c.setopt(pycurl.HTTPHEADER, ["Authorization: bearer " + access_token])
+		c.setopt(pycurl.SSL_VERIFYPEER, 1)
+		c.setopt(pycurl.WRITEFUNCTION, b.write)
+		 
+		c.perform()
+		user = json.loads(b.getvalue())
+		 
+		print "%s %s %s"%(user['name'], user['email'], user['user_id'])
+	
 	return render_to_response('index.html',{"amazonUser": user},
-                               context_instance=RequestContext(request))
+							   context_instance=RequestContext(request))
 
 def origamis(request):
-        origamis = Origami.objects.all()
+	origamis = Origami.objects.all()
 	''' This will return the wrap your gift page '''
 	return render_to_response('origamis.html',{'origamis': origamis},
-                               context_instance=RequestContext(request))
+							   context_instance=RequestContext(request))
 
 def coupon_redirect(request,coupon):
 	''' This will redirect to amazon with the right coupon code '''
 	return render_to_response('redirect.html',{'coupon' : coupon},
-                               context_instance=RequestContext(request))
+							   context_instance=RequestContext(request))
 def user_page(request):
 	''' This will return the page with the generated email and manage user '''
 	

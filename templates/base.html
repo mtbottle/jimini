@@ -12,16 +12,23 @@
 	<!--<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>-->
 	
 	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+
+    <script type='text/javascript'>
+      window.onAmazonLoginReady = function() {
+        amazon.Login.setClientId('amzn1.application-oa2-client.8b29ce13f5444fb783556d29ad0216e1');
+      };
+    </script>
+    <script type='text/javascript'
+     src='https://static-na.payments-amazon.com/OffAmazonPayments/us/sandbox/js/Widgets.js?sellerId=A2OSAYU8Y178Y0'>
+    </script>
+
   </head>
   <body>
   
   <header>
     <div id="amazon-root"></div>
     <script type="text/javascript">
-    
-      window.onAmazonLoginReady = function() {
-        amazon.Login.setClientId('amzn1.application-oa2-client.8b29ce13f5444fb783556d29ad0216e1');
-      };
+
       (function(d) {
         var a = d.createElement('script'); a.type = 'text/javascript';
         a.async = true; a.id = 'amazon-login-sdk';
