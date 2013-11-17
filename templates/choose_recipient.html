@@ -99,9 +99,9 @@
 <div class="RecipientShipping">
   <h3>Select Recipient</h3>
     {% if order_id != None %}
-    <form method="post" action="../{{ origami.id }}/{{ order_id }}">
+    <form method="post" action="../{{ origami.id }}/{{ order_id }}?session={{ amazonOrderReferenceId }}">
     {% else %}
-    <form method="post" action="/choose_recipient.html/{{ origami.id }}">
+    <form method="post" action="/choose_recipient.html/{{ origami.id }}?session={{ amazonOrderReferenceId }}">
     {% endif %}{% csrf_token %}
       <span class="formlabel">To: </span><br>
       <span class='error'>{{ form.recipient_name.errors }}</span>

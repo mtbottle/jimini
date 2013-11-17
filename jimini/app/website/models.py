@@ -79,6 +79,7 @@ class RecipientShippingForm(forms.Form):
 # This is the order model which takes an origami entries from the RecipientShipping form 
 class Order(models.Model):
 	user_id = 1
+	amazonOrderReferenceId = models.CharField(max_length=100)
 	order_date = models.DateTimeField(auto_now_add = True)
 	order_status = models.CharField(max_length=100)
 	email_code = models.CharField(max_length=100)
