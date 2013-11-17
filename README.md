@@ -40,7 +40,7 @@ To watch some training videos, visit http://www.youtube.com/user/c9ide
 
 Install pil for image importing: easy_install pil
 
-Install jinja2 for email templates: easy_install install jinja2
+Install jinja2 for email templates: easy_install jinja2
 
 Install localflavor: easy_install django-localflavor
 
