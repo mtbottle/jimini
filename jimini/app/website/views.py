@@ -139,7 +139,8 @@ def payment(request, order_id, origami_id):
 
 	response = mws.make_request(data)
 	
-	pprint response.parse()
+	pp = pprint.PrettyPrinter(depth=6)
+	pp.pprint(response.parsed())
 	
 	'''This returns the checkout with Amazon page'''
 	origami = Origami.objects.get(id=origami_id)
