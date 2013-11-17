@@ -121,6 +121,7 @@ def choose_recipient(request, origami_id, order_id=None):
 
 def payment(request, order_id, origami_id):
 	from mws import MWS
+	import pprint
 	
 	mws = MWS(access_key="AKIAJXQZJU2XOOX326JQ",secret_key="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",account_id="A2OSAYU8Y178Y0",uri="/OffAmazonPayments_Sandbox/2013-01-01",version="2013-01-01")
 	
@@ -136,7 +137,9 @@ def payment(request, order_id, origami_id):
 					
 	data.update(params)
 
-	print mws.make_request(data)
+	response = mws.make_request(data)
+	
+	pprint response.parse()
 	
 	'''This returns the checkout with Amazon page'''
 	origami = Origami.objects.get(id=origami_id)
