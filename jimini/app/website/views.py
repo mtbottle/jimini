@@ -12,6 +12,10 @@ import hashlib
 import random
 import os
 
+MWS_ACCESS_KEY = "AKIAJXQZJU2XOOX326JQ"
+MWS_SECRET_KEY = "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"
+MWS_SELLER_ID = "A2OSAYU8Y178Y0"
+
 app_dir = os.path.dirname(__file__) # get current directory
 
 
@@ -49,9 +53,13 @@ def choose_recipient(request, origami_id, order_id=None):
 	and provides shipping information.'''
 	origami = Origami.objects.get(id=origami_id)
 	
+	amazonOrderReferenceId = ""
+	if request.GET.has_key("session"): amazonOrderReferenceId = str(request.GET["session"])
+	
 	# if the user backtracked and already has an order_id...
 	if order_id != None:
 		order = Order.objects.get(id=order_id)
+		amazonOrderReferenceId = order.amazonOrderReferenceId
 		
 		# if the user went back and chose a different origami, update the origami_id
 		if order.origami_id != origami_id:
@@ -74,7 +82,7 @@ def choose_recipient(request, origami_id, order_id=None):
 			
 			# If the user is submitting the form for the first time, add the data to the db
 			if order_id == None:
-				order = Order(origami_id=origami_id, order_status='pre-payment', email_code=gen_email_code(), 
+				order = Order(amazonOrderReferenceId=amazonOrderReferenceId, origami_id=origami_id, order_status='pre-payment', email_code=gen_email_code(), 
 						  recipient_name=recipient_name, sender_name=sender_name, message=message, ship_to_name=ship_to_name, 
 						  ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code)
 				order.save()
@@ -90,6 +98,29 @@ def choose_recipient(request, origami_id, order_id=None):
 				order.state = state
 				order.zip_code = zip_code
 				order.save()
+				
+			from mws import MWS
+			import pprint
+			
+			mws = MWS(access_key=MWS_ACCESS_KEY,secret_key=MWS_SECRET_KEY,account_id=MWS_SELLER_ID,uri="/OffAmazonPayments_Sandbox/2013-01-01",version="2013-01-01")
+			
+			params = {}
+			params["OrderReferenceAttributes.OrderTotal.Amount"] = str(origami.price)
+			params["OrderReferenceAttributes.OrderTotal.CurrencyCode"] = "USD"
+			params["OrderReferenceAttributes.SellerNote"] = message
+			params["OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId"] = str(order.id)
+			
+			data = dict(Action='SetOrderReferenceDetails',
+							SellerId=MWS_SELLER_ID,
+							AmazonOrderReferenceId=str(amazonOrderReferenceId))
+							
+			data.update(params)
+		
+			mwsResponse = mws.make_request(data)
+			
+			pp = pprint.PrettyPrinter(depth=6)
+			pp.pprint(mwsResponse.parsed)
+			
 
 			# After submitting the form, send user to the payments page
 			return HttpResponseRedirect('/payment.html/%s/%s' % (origami_id, order.id))
@@ -110,9 +141,6 @@ def choose_recipient(request, origami_id, order_id=None):
 	# User is visiting the page for the first time - show him the empty form
 	else:
 		form = RecipientShippingForm() # An unbound form
-		
-	amazonOrderReferenceId = ""
-	if request.GET.has_key("session"): amazonOrderReferenceId = str(request.GET["session"])
 
 	return render_to_response('choose_recipient.html', {'form':form, 'origami':origami, 'order_id':order_id, 'origami_id':origami_id, 'amazonOrderReferenceId': amazonOrderReferenceId},
 					  context_instance=RequestContext(request))
@@ -120,28 +148,7 @@ def choose_recipient(request, origami_id, order_id=None):
 
 
 def payment(request, order_id, origami_id):
-	from mws import MWS
-	import pprint
-	
-	mws = MWS(access_key="AKIAJXQZJU2XOOX326JQ",secret_key="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",account_id="A2OSAYU8Y178Y0",uri="/OffAmazonPayments_Sandbox/2013-01-01",version="2013-01-01")
-	
-	params = {}
-	params["OrderReferenceAttributes.OrderTotal.Amount"] = "10"
-	params["OrderReferenceAttributes.OrderTotal.CurrencyCode"] = "USD"
-	params["OrderReferenceAttributes.SellerNote"] = "Origamis"
-	params["OrderReferenceAttributes.SellerOrderAttributes.SellerOrderId"] = "4"
-	
-	data = dict(Action='SetOrderReferenceDetails',
-					SellerId="A2OSAYU8Y178Y0",
-					AmazonOrderReferenceId="S01-1307655-0382402")
-					
-	data.update(params)
 
-	response = mws.make_request(data)
-	
-	pp = pprint.PrettyPrinter(depth=6)
-	pp.pprint(response.parsed())
-	
 	'''This returns the checkout with Amazon page'''
 	origami = Origami.objects.get(id=origami_id)
 	order = Order.objects.get(id=order_id) 
@@ -154,7 +161,7 @@ def payment(request, order_id, origami_id):
 	
 	# Load page for normal GET request
 	else:
-		return render_to_response('payment.html',{'origami' : origami, 'order':order},
+		return render_to_response('payment.html',{'origami': origami, 'order': order},
 							   context_instance=RequestContext(request))
 
 

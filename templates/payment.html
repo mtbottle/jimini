@@ -11,7 +11,55 @@
   <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4_half.png" %}'/>
 </div>
 
-	
+
+    
+    <div id="addressBookWidgetDiv">
+    </div> 
+    <script>
+    new OffAmazonPayments.Widgets.AddressBook({
+     sellerId: 'A2OSAYU8Y178Y0',
+     amazonOrderReferenceId: '{{ order.amazonOrderReferenceId }}', 
+     // amazonOrderReferenceId obtained from Button widget
+     displayMode: "Read",
+     onAddressSelect: function(orderReference) {
+     // Replace the following code with the action that you want to perform 
+     // after the address is selected.
+     // The amazonOrderReferenceId can be used to retrieve 
+     // the address details by calling the GetOrderReferenceDetails
+     // operation. If rendering the AddressBook and Wallet widgets on the
+     // same page, you should wait for this event before you render the
+     // Wallet widget for the first time.
+     
+     },
+     design: {
+     size : {width:'400px', height:'260px'}
+     },
+     onError: function(error) {
+     // your error handling code
+     }
+    }).bind("addressBookWidgetDiv");
+    </script>
+
+	<script>
+    new OffAmazonPayments.Widgets.Wallet({
+     sellerId: 'A2OSAYU8Y178Y0',
+     amazonOrderReferenceId: '{{ order.amazonOrderReferenceId }}', 
+     // amazonOrderReferenceId obtained from Button widget
+     displayMode: "Read",
+     design: {
+     size : {width:'400px', height:'260px'}
+     },
+     onPaymentSelect: function(orderReference) {
+     // Replace this code with the action that you want to perform
+     // after the payment method is selected.
+     },
+     onError: function(error) {
+     // your error handling code
+     }
+    }).bind("walletWidgetDiv");
+    </script>
+    <div id="walletWidgetDiv">
+    </div>
 
 <div class="RecipientShipping">
   <h3>Recipient</h3>
