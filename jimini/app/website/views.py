@@ -11,10 +11,14 @@ import sendmail
 import hashlib
 import random
 import os
+from mws import MWS
+import pprint
 
 MWS_ACCESS_KEY = "AKIAJXQZJU2XOOX326JQ"
 MWS_SECRET_KEY = "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"
 MWS_SELLER_ID = "A2OSAYU8Y178Y0"
+
+mws = MWS(access_key=MWS_ACCESS_KEY,secret_key=MWS_SECRET_KEY,account_id=MWS_SELLER_ID,uri="/OffAmazonPayments_Sandbox/2013-01-01",version="2013-01-01")
 
 app_dir = os.path.dirname(__file__) # get current directory
 
@@ -98,11 +102,6 @@ def choose_recipient(request, origami_id, order_id=None):
 				order.state = state
 				order.zip_code = zip_code
 				order.save()
-				
-			from mws import MWS
-			import pprint
-			
-			mws = MWS(access_key=MWS_ACCESS_KEY,secret_key=MWS_SECRET_KEY,account_id=MWS_SELLER_ID,uri="/OffAmazonPayments_Sandbox/2013-01-01",version="2013-01-01")
 			
 			params = {}
 			params["OrderReferenceAttributes.OrderTotal.Amount"] = str(origami.price)
@@ -171,6 +170,15 @@ def confirmation(request, order_id):
 	order = Order.objects.get(id=order_id) 
 	origami = Origami.objects.get(id=order.origami_id)
 	# user = User.objects.get(id=order.user_id)
+	
+	data = dict(Action='ConfirmOrderReference',
+					SellerId=MWS_SELLER_ID,
+					AmazonOrderReferenceId=str(order.amazonOrderReferenceId))
+	
+	mwsResponse = mws.make_request(data)
+	
+	pp = pprint.PrettyPrinter(depth=6)
+	pp.pprint(mwsResponse.parsed)
 	
 	# Change order_status to 'paid'
 	order.order_status = 'paid'
