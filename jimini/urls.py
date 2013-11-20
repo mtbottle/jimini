@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^choose_recipient.html/(?P<origami_id>[0-9]+)/(?P<order_id>[0-9]+)$', 'jimini.app.website.views.choose_recipient', name='choose_recipient'),
     url(r'^payment.html/(?P<origami_id>[0-9]+)/(?P<order_id>[0-9]+)$', 'jimini.app.website.views.payment', name='payment'),
     url(r'^confirmation.html/(?P<order_id>[0-9]+)$', 'jimini.app.website.views.confirmation', name='confirmation'),
+    url(r'^check_mail', 'jimini.app.website.views.mail_cron', name='mail_cron'),
 
     # Examples:
     # url(r'^$', 'jimini.views.home', name='home'),

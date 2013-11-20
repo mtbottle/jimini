@@ -1,5 +1,4 @@
 from email.mime.text import MIMEText
-from django.core.management import setup_environ
 
 import smtplib, imaplib
 import email
@@ -70,22 +69,25 @@ def check_inbox(server):
 			if isinstance(response_part, tuple):
 				msg = email.message_from_string(response_part[1])
        				email_list.append(msg)
-	return email_list, server
+	return email_list
 
 
 
 ######  Need help connecting to models.py to finalize this function  ######	
 
-def extract_order_code(email_list, server):
+def extract_order_code(email_list):
 	'''Extract order codes from list of emails'''
 	# Check is list is empty
-	if len(email_list[0]) > 0:
-		for msg in email_list[0]:
+	print 'searching for message'
+	if len(email_list) > 0:
+		for msg in email_list:
 
 			email_code = re.search(r'<([A-Za-z0-9]+)@', msg['from']).group(1)
 
-			#order = Order.objects.get(order_code=email_code)
-			order = 'lalala'
+			order = Order.objects.get(order_code=email_code)
+			print order
+			print 'found message'
+
 			# check if code is in DB
 			if order != None:
 				# Update order status to 'gift received'
@@ -102,7 +104,7 @@ def extract_order_code(email_list, server):
 				forward_email(msg, email_to)
 
 			else:
-				pass
+				print 'order is None'
 
  	# Logout
 	server.close()
@@ -113,7 +115,7 @@ def extract_order_code(email_list, server):
 
 if __name__ == '__main__':
 	server = connect_email_server()
-	extract_order_code(check_inbox(server), server)
+	extract_order_code(check_inbox(server))
 
 
 
