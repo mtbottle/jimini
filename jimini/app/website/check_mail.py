@@ -81,8 +81,8 @@ def extract_order_code(email_list):
 	print 'searching for message'
 	if len(email_list) > 0:
 		for msg in email_list:
-
-			email_code = re.search(r'<([A-Za-z0-9]+)@', msg['from']).group(1)
+			msg['to'] == 'smelly-socks@jimini.com'
+			email_code = re.search(r'<([A-Za-z0-9-]+)@', msg['to']).group(1)
 
 			order = Order.objects.get(order_code=email_code)
 			print order
@@ -98,7 +98,7 @@ def extract_order_code(email_list):
 				first_name = 'Brendan'
 				email_to = 'bfortuner@gmail.com'
 				# order.gift_received_email(first_name, email_to)
-				sendmail.send_jimini_email('confirmation@jimini.co', email_to, 'Jimini received your digital gift', 'hey there mister')
+				sendmail.send_jimini_email('confirmation@jimini.co', email_to, 'Jimini received your digital gift', 'hey there %s for order %s' % (email_code, order))
 				
 				# Forward Amazon Gift Email
 				forward_email(msg, email_to)

@@ -49,25 +49,34 @@ def mail_cron(request):
 	''' This will return the splash page for index '''
 	server = check_mail.connect_email_server()
         email_list = check_mail.check_inbox(server)
-	
+	print 'running mail_cron'
 	if len(email_list) > 0:
+		print 'found email..'
 		for msg in email_list:
-			email_code = re.search(r'<([A-Za-z0-9]+)@', msg['from']).group(1)
-			#order = Order.objects.get(order_code=email_code)
-                        #print order
+			jimini_code = re.search(r'<([A-Za-z0-9]+)@', msg['to']).group(1)
+			print jimini_code
+
+			
+			try:
+				order = Order.objects.get(email_code=jimini_code)
+			except:
+				order = None
+
+                        print order
                         
-			order = 'lalala'
+			#order = 'lalala'
                         # check if code is in DB                                                                                                                                                 
 
                         if order != None:
-                                # Update order status to 'gift received'                                                                                                                          
+				print 'found order'
+				# Update order status to 'gift received'                                                                                                                          
                                 # order.order_status = 'paid'                                                                                                                                      
                                 # order.save()                                                                                                                                                    
                                 # Send gift received email!                                                                                                                                       
                                 first_name = 'Brendan'
                                 email_to = 'bfortuner@gmail.com'
                                 # order.gift_received_email(first_name, email_to)                                                                                                                  
-                                sendmail.send_jimini_email('confirmation@jimini.co', email_to, 'Jimini received your digital gift', 'hey there mister')
+                                sendmail.send_jimini_email('confirmation@jimini.co', email_to, 'Jimini received your digital gift', 'hey there mister %s' % jimini_code)
 
                                 # Forward Amazon Gift Email                                                                                                                                            
                                 check_mail.forward_email(msg, email_to)
