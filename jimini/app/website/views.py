@@ -105,7 +105,7 @@ def choose_recipient(request, origami_id, order_id=None):
 	and provides shipping information.'''
 	origami = Origami.objects.get(id=origami_id)
 	
-	amazonOrderReferenceId = ""
+	amazonOrderReferenceId = None
 	if request.GET.has_key("session"): amazonOrderReferenceId = str(request.GET["session"])
 	
 	# if the user backtracked and already has an order_id...
@@ -126,11 +126,11 @@ def choose_recipient(request, origami_id, order_id=None):
 			recipient_name = form.cleaned_data['recipient_name']
 			sender_name = form.cleaned_data['sender_name']
 			message = form.cleaned_data['message']
-			ship_to_name = form.cleaned_data['ship_to_name']
-			ship_to_address = form.cleaned_data['ship_to_address']
-			city = form.cleaned_data['city']
-			state = form.cleaned_data['state']
-			zip_code = str(form.cleaned_data['zip_code'])
+			ship_to_name = ""
+			ship_to_address = ""
+			city = ""
+			state = ""
+			zip_code = ""
 			
 			# If the user is submitting the form for the first time, add the data to the db
 			if order_id == None:
@@ -144,13 +144,8 @@ def choose_recipient(request, origami_id, order_id=None):
 				order.recipient_name = recipient_name
 				order.sender_name = sender_name
 				order.message = message
-				order.ship_to_name = ship_to_name
-				order.ship_to_address = ship_to_address
-				order.city = city
-				order.state = state
-				order.zip_code = zip_code
 				order.save()
-			
+
 			params = {}
 			params["OrderReferenceAttributes.OrderTotal.Amount"] = str(origami.price)
 			params["OrderReferenceAttributes.OrderTotal.CurrencyCode"] = "USD"
@@ -167,6 +162,11 @@ def choose_recipient(request, origami_id, order_id=None):
 			
 			pp = pprint.PrettyPrinter(depth=6)
 			pp.pprint(mwsResponse.parsed)
+			
+			order.city = mwsResponse.parsed.OrderReferenceDetails.Destination.PhysicalDestination.City
+			order.state = mwsResponse.parsed.OrderReferenceDetails.Destination.PhysicalDestination.StateOrRegion
+			order.zip_code = mwsResponse.parsed.OrderReferenceDetails.Destination.PhysicalDestination.PostalCode
+			order.save()
 			
 
 			# After submitting the form, send user to the payments page
@@ -225,8 +225,25 @@ def confirmation(request, order_id):
 	
 	mwsResponse = mws.make_request(data)
 	
+	data = dict(Action='GetOrderReferenceDetails',
+					SellerId=MWS_SELLER_ID,
+					AmazonOrderReferenceId=str(order.amazonOrderReferenceId))
+	
+	mwsResponse = mws.make_request(data)
+	
 	pp = pprint.PrettyPrinter(depth=6)
 	pp.pprint(mwsResponse.parsed)
+	
+	physicalDestination = mwsResponse.parsed.OrderReferenceDetails.Destination.PhysicalDestination
+	
+	order.ship_to_name = physicalDestination.Name
+	address = physicalDestination.AddressLine1
+	if (physicalDestination.has_key("AddressLine2")): address += physicalDestination.AddressLine2
+	order.ship_to_address = address
+	order.city = physicalDestination.City
+	order.state = physicalDestination.StateOrRegion
+	order.zip_code = physicalDestination.PostalCode
+	order.save()
 	
 	# Change order_status to 'paid'
 	order.order_status = 'paid'
