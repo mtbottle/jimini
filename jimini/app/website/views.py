@@ -46,17 +46,32 @@ def splash_page(request):
 							   context_instance=RequestContext(request))
 
 def mail_cron(request):
-	''' This will return the splash page for index '''
+	''' If user visits http://jimini.co/check_mail this function will run.
+	It checks the jimini.co email inbox for UNREAD messages sent to: email-code@jimini.co.
+	It then tries to find that email-code in our db. If it finds a match, it pulls the email address
+	of the sender, forwards them the email we received from Amazon, Google, etc. with the digital gift
+	receipt, and sends them a second email with a confirmation that we received their gift.'''
+
+	# Connect to email server 
 	server = check_mail.connect_email_server()
+	
+	# Check inbox for UNREAD messages sent to email-code@jimin.co
         email_list = check_mail.check_inbox(server)
 	print 'running mail_cron'
+
+	# If UNREAD @jimini emails found..
 	if len(email_list) > 0:
 		print 'found email..'
-		for msg in email_list:
-			jimini_code = re.search(r'<([A-Za-z0-9]+)@', msg['to']).group(1)
-			print jimini_code
 
+		for msg in email_list:
+			# Extract email-code from 'to' header
+			print msg['to']
+			print msg['from']
+			jimini_code = re.search(r'([A-Za-z0-9]+)@', msg['to']).group(1)
+			print jimini_code
 			
+			jimini_code = 'smelly-socks'
+			# Search for email-code in Orders table
 			try:
 				order = Order.objects.get(email_code=jimini_code)
 			except:
@@ -67,19 +82,22 @@ def mail_cron(request):
 			#order = 'lalala'
                         # check if code is in DB                                                                                                                                                 
 
+			# If order match found...
                         if order != None:
 				print 'found order'
+				
 				# Update order status to 'gift received'                                                                                                                          
-                                # order.order_status = 'paid'                                                                                                                                      
-                                # order.save()                                                                                                                                                    
-                                # Send gift received email!                                                                                                                                       
-                                first_name = 'Brendan'
-                                email_to = 'bfortuner@gmail.com'
-                                # order.gift_received_email(first_name, email_to)                                                                                                                  
-                                sendmail.send_jimini_email('confirmation@jimini.co', email_to, 'Jimini received your digital gift', 'hey there mister %s' % jimini_code)
+                                order.order_status = 'Gift Received'
+				order.save()                                                                                                                                                    
+                                
+				# Send gift received email to sender!                                                                                                                                
+				first_name = 'Brendan'
+				email_to = 'bfortuner@gmail.com'
+                                order.gift_received_email(first_name, email_to)                                                                                                                  
+                                # sendmail.send_jimini_email('confirmation@jimini.co', email_to, 'Jimini received your digital gift', 'hey there mister %s' % jimini_code)
 
-                                # Forward Amazon Gift Email                                                                                                                                            
-                                check_mail.forward_email(msg, email_to)
+                                # Forward Amazon, Google, etc. gift receipt email                                                                                                             
+				check_mail.forward_email(msg, email_to)
 
         # Logout                                                                                                                                                                                     
         server.close()
