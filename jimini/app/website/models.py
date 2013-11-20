@@ -69,12 +69,6 @@ class RecipientShippingForm(forms.Form):
 	sender_name = forms.CharField(label='Sender name', max_length=150, required=False)
 	message = forms.CharField(widget=forms.Textarea(attrs={'cols':40,'rows':5}), label='Message (optional)', required=False)
 	
-	ship_to_name = forms.CharField(label='Ship-to name')
-	ship_to_address = forms.CharField(label='Address')
-	city = forms.CharField(max_length=100, label='City')
-	state = USStateField()
-	zip_code = USZipCodeField()
-	
 
 # This is the order model which takes an origami entries from the RecipientShipping form 
 class Order(models.Model):

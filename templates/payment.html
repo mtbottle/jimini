@@ -11,10 +11,6 @@
   <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4_half.png" %}'/>
 </div>
 
-
-    
-    <div id="addressBookWidgetDiv">
-    </div> 
     <script>
     new OffAmazonPayments.Widgets.AddressBook({
      sellerId: 'A2OSAYU8Y178Y0',
@@ -58,60 +54,46 @@
      }
     }).bind("walletWidgetDiv");
     </script>
-    <div id="walletWidgetDiv">
-    </div>
 
-<div class="RecipientShipping">
-  <h3>Recipient</h3>
-  <table>
-    <tr>
-      <td class="formlabel">To: </td>
-      <td>{{ order.recipient_name }}</td>
-    </tr>
-    <tr>
-      <td class="formlabel">From: </td>
-      <td>{{ order.sender_name }}</td>
-    </tr>
-    <tr>
-      <td class="formlabel">Message: </td>
-      <td>{{ order.message }}</td>
-    </tr>
-  </table>    
-    <h3>Shipping Details</h3>
-    <table>
-      <tr>
-        <td class="formlabel">Full name: </td>
-        <td id="ship_to_name">{{ order.ship_to_name }}</td>
-      </tr>
-      <tr>
-        <td class="formlabel">Address: </td>
-        <td id="ship_to_address">{{ order.ship_to_address }}</td>
-      </tr>
-      <tr>
-        <td class="formlabel">City: </td>
-        <td id="ship_to_address">{{ order.city }}</td>
-      </tr>
-      <tr>
-        <td class="formlabel">State: </td>
-        <td id="ship_to_address">{{ order.state }}</td>
-      </tr>
-      <tr>
-        <td class="formlabel">Zip code: </td>
-        <td id="ship_to_address">{{ order.zip_code }}</td>
-      </tr>
-      </table>
-    <br>
-    <span><a href="/choose_recipient.html/{{ origami.id }}/{{ order.id }}">Edit</a></span>
-    <br><br>
-</div>
-
-<div class="paymentBox">
-  <div class="innerPaymentBox">
-    <h3>Order Total: ${{ origami.price }}</h3>
-    <img src='{{ origami.get_pictures.0.picture.url }}'/>
-    <a href='/confirmation.html/{{ order.id }}'><h4>Pay with Amazon</h4></a>
-    
-  </div>
+<table>
+<tr>
+    <td width=450px>
+    <h3>Recipient</h3>
+      <table>
+            <tr>
+              <td class="formlabel">To: </td>
+              <td>{{ order.recipient_name }}</td>
+            </tr>
+            <tr>
+              <td class="formlabel">From: </td>
+              <td>{{ order.sender_name }}</td>
+            </tr>
+            <tr>
+              <td class="formlabel">Message: </td>
+              <td>{{ order.message }}</td>
+            </tr>
+        </table>
+        <br>
+    </td>
+    <td>
+        <h3>Order Total: ${{ origami.price }}</h3>
+        <img src='{{ origami.get_pictures.0.picture.url }}'/>
+        <a href='/confirmation.html/{{ order.id }}'><h4>Pay with Amazon</h4></a>
+        <span><a href="/choose_recipient.html/{{ origami.id }}/{{ order.id }}">Edit</a></span>
+    </td>
+</tr>
+<tr>
+    <td>
+        <h3>Shipping Address</h3>
+    	<div id="addressBookWidgetDiv">
+        </div>
+    </td>
+    <td>
+        <h3>Payment Method</h3>
+        <div id="walletWidgetDiv"></div>
+    </td>
+</tr>
+</table>
 </div>
 
 {% endblock %}

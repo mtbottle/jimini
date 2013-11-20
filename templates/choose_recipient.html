@@ -17,12 +17,17 @@
   <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4_half.png" %}'/>
 </div>
 
-	
-	<div id="AmazonPayButton"/>
+	{% if amazonOrderReferenceId == None %} 
+	<div align=center style="padding: 30px">
+	    Please login with your Amazon account to select your shipment address.
+	    <br>
+	    <br>
+	    <div id="AmazonPayButton"/>
+	</div>
     <script type="text/javascript">
      var authRequest;
      OffAmazonPayments.Button("AmazonPayButton", "A2OSAYU8Y178Y0", {
-     type: "PwA",
+     type: "LwA",
      useAmazonAddressBook: true,
      authorization: function() {
      loginOptions =
@@ -41,9 +46,9 @@
      }
      });
     </script>
+    {% else %}
     
     <script>
-    var wallet = function() {
     new OffAmazonPayments.Widgets.Wallet({
      sellerId: 'A2OSAYU8Y178Y0',
      amazonOrderReferenceId: '{{ amazonOrderReferenceId }}', 
@@ -59,12 +64,10 @@
      // your error handling code
      }
     }).bind("walletWidgetDiv");
-    }
     </script>
         
     
-    <div id="addressBookWidgetDiv">
-    </div> 
+ 
     <script>
     new OffAmazonPayments.Widgets.AddressBook({
      sellerId: 'A2OSAYU8Y178Y0',
@@ -78,9 +81,6 @@
      // operation. If rendering the AddressBook and Wallet widgets on the
      // same page, you should wait for this event before you render the
      // Wallet widget for the first time.
-     
-     wallet();
-     
      },
      design: {
      size : {width:'400px', height:'260px'}
@@ -91,56 +91,49 @@
     }).bind("addressBookWidgetDiv");
     </script>
 
-    <div id="walletWidgetDiv">
-    </div>
+<table>
+<tr>
+    <td width=450px>
+        <h3>Select Recipient</h3>
+        {% if order_id != None %}
+        <form method="post" action="../{{ origami.id }}/{{ order_id }}?session={{ amazonOrderReferenceId }}">
+        {% else %}
+        <form method="post" action="/choose_recipient.html/{{ origami.id }}?session={{ amazonOrderReferenceId }}">
+        {% endif %}{% csrf_token %}
+          <span class="formlabel">To: </span><br>
+          <span class='error'>{{ form.recipient_name.errors }}</span>
+          <span id="recipient_name">{{ form.recipient_name }}</span><br>
+          <span class="formlabel">From: </span><br>
+          <span class='error'>{{ form.sender_name.errors }}</span>
+          <span id="recipient_name">{{ form.sender_name }}</span><br>
+          <span class="formlabel">Message</span><br>
+          <span class='error'>{{ form.message.errors }}</span>
+          <span id="message">{{ form.message }}</span>
+        <br>
+    </td>
+    <td>
+      <h3 class="origamiTitle">{{ origami.title }}</h3>
+	  <img src='{{ origami.get_pictures.0.picture.url }}'/>
+	  <h2>Price: ${{ origami.price }}</h2>
+      <p>{{ origami.description }}</p>
+    </td>
+</tr>
+<tr>
+    <td>
+        <h3>Shipping Address</h3>
+    	<div id="addressBookWidgetDiv">
+        </div>
+    </td>
+    <td>
+        <h3>Payment Method</h3>
+        <div id="walletWidgetDiv"></div>
+    </td>
+</tr>
 
-	
 
-<div class="RecipientShipping">
-  <h3>Select Recipient</h3>
-    {% if order_id != None %}
-    <form method="post" action="../{{ origami.id }}/{{ order_id }}?session={{ amazonOrderReferenceId }}">
-    {% else %}
-    <form method="post" action="/choose_recipient.html/{{ origami.id }}?session={{ amazonOrderReferenceId }}">
-    {% endif %}{% csrf_token %}
-      <span class="formlabel">To: </span><br>
-      <span class='error'>{{ form.recipient_name.errors }}</span>
-      <span id="recipient_name">{{ form.recipient_name }}</span><br>
-      <span class="formlabel">From: </span><br>
-      <span class='error'>{{ form.sender_name.errors }}</span>
-      <span id="recipient_name">{{ form.sender_name }}</span><br>
-      <span class="formlabel">Message</span><br>
-      <span class='error'>{{ form.message.errors }}</span>
-      <span id="message">{{ form.message }}</span>
-    <br>
-    <h3>Shipping Address</h3>
-    <table>
-      <tr>
-	<td class="formlabel">Full name</td>
-	<td id="ship_to_name">{{ form.ship_to_name }}</td>
-	<td class='error'>{{ form.ship_to_name.errors }}</td>
-      </tr>
-      <tr>
-	<td class="formlabel">Address</td>
-	<td id="ship_to_address">{{ form.ship_to_address }}</td>
-	<td class='error'>{{ form.ship_to_address.errors }}</td>
-      </tr>
-      <tr>
-	<td class="formlabel">City</td>
-	<td id="ship_to_address">{{ form.city }}</td>
-	<td class='error'>{{ form.city.errors }}</td>
-      </tr>
-      <tr>
-	<td class="formlabel">State</td>
-	<td id="ship_to_address">{{ form.state }}</td>
-	<td class='error'>{{ form.state.errors }}</td>
-      </tr>
-      <tr>
-	<td class="formlabel">Zip code</td>
-	<td id="ship_to_address">{{ form.zip_code }}</td>
-	<td class='error'>{{ form.zip_code.errors }}</td>
-      </tr>
-      <tr>
+
+    
+<tr>
 	<td>
 	  {% if order_id == None %}
 	  <a href="/choose_origami.html/{{ origami_id }}">Back</a>
@@ -154,13 +147,7 @@
   </form>
 </div>
 
-  <div class="checkoutOrigamiDisplay">
-          <h3 class="origamiTitle">{{ origami.title }}</h3>
-	  <img src='{{ origami.get_pictures.0.picture.url }}'/>
-	  <h2>Price: ${{ origami.price }}</h2>
-          <p>{{ origami.description }}</p>
-  </div>
-
+  {% endif %}
 
 </div>
 
