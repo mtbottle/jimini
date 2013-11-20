@@ -13,6 +13,9 @@ import random
 import os
 from mws import MWS
 import pprint
+import check_mail
+import re
+
 
 MWS_ACCESS_KEY = "AKIAJXQZJU2XOOX326JQ"
 MWS_SECRET_KEY = "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"
@@ -38,6 +41,42 @@ def gen_email_code():
 
 def splash_page(request):
 	''' This will return the splash page for index '''
+	origamis = Origami.objects.all()
+	return render_to_response('index.html',{'origamis': origamis},
+							   context_instance=RequestContext(request))
+
+def mail_cron(request):
+	''' This will return the splash page for index '''
+	server = check_mail.connect_email_server()
+        email_list = check_mail.check_inbox(server)
+	
+	if len(email_list) > 0:
+		for msg in email_list:
+			email_code = re.search(r'<([A-Za-z0-9]+)@', msg['from']).group(1)
+			#order = Order.objects.get(order_code=email_code)
+                        #print order
+                        
+			order = 'lalala'
+                        # check if code is in DB                                                                                                                                                 
+
+                        if order != None:
+                                # Update order status to 'gift received'                                                                                                                          
+                                # order.order_status = 'paid'                                                                                                                                      
+                                # order.save()                                                                                                                                                    
+                                # Send gift received email!                                                                                                                                       
+                                first_name = 'Brendan'
+                                email_to = 'bfortuner@gmail.com'
+                                # order.gift_received_email(first_name, email_to)                                                                                                                  
+                                sendmail.send_jimini_email('confirmation@jimini.co', email_to, 'Jimini received your digital gift', 'hey there mister')
+
+                                # Forward Amazon Gift Email                                                                                                                                            
+                                check_mail.forward_email(msg, email_to)
+
+        # Logout                                                                                                                                                                                     
+        server.close()
+        server.logout()
+
+	#sendmail.send_jimini_email('info@jimini.co', 'bfortuner@gmail.com', 'hi', 'This is my message')
 	origamis = Origami.objects.all()
 	return render_to_response('index.html',{'origamis': origamis},
 							   context_instance=RequestContext(request))
