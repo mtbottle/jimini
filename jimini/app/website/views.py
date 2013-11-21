@@ -65,36 +65,30 @@ def mail_cron(request):
 
 		for msg in email_list:
 			# Extract email-code from 'to' header
-			print msg['to']
-			print msg['from']
 			jimini_code = re.search(r'([A-Za-z0-9]+)@', msg['to']).group(1)
-			print jimini_code
-			
+
+			# TEMPORARY: fake email code for testing purposes
 			jimini_code = 'smelly-socks'
+
 			# Search for email-code in Orders table
 			try:
 				order = Order.objects.get(email_code=jimini_code)
 			except:
 				order = None
 
-                        print order
-                        
-			#order = 'lalala'
-                        # check if code is in DB                                                                                                                                                 
-
 			# If order match found...
                         if order != None:
-				print 'found order'
 				
 				# Update order status to 'gift received'                                                                                                                          
                                 order.order_status = 'Gift Received'
 				order.save()                                                                                                                                                    
                                 
-				# Need to get sender's email address from Amazon
+				# TEMPORARY: Need to get sender's email address from Amazon
 				order_id = order.amazonOrderReferenceId
 				first_name = 'Brendan'
 				email_to = 'bfortuner@gmail.com'
 				
+				# Grab origami details needed to generate email template
 				origami = Origami.objects.get(id=order.origami_id)
 				origami_price = origami.price
 				origami_title = origami.title
