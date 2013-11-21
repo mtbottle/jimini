@@ -73,49 +73,10 @@ def check_inbox(server):
 
 
 
-######  Need help connecting to models.py to finalize this function  ######	
-
-def extract_order_code(email_list):
-	'''Extract order codes from list of emails'''
-	# Check is list is empty
-	print 'searching for message'
-	if len(email_list) > 0:
-		for msg in email_list:
-			msg['to'] == 'smelly-socks@jimini.com'
-			email_code = re.search(r'<([A-Za-z0-9-]+)@', msg['to']).group(1)
-
-			order = Order.objects.get(order_code=email_code)
-			print order
-			print 'found message'
-
-			# check if code is in DB
-			if order != None:
-				# Update order status to 'gift received'
-				# order.order_status = 'paid'
-				# order.save()
-				
-				# Send gift received email! 
-				first_name = 'Brendan'
-				email_to = 'bfortuner@gmail.com'
-				# order.gift_received_email(first_name, email_to)
-				sendmail.send_jimini_email('confirmation@jimini.co', email_to, 'Jimini received your digital gift', 'hey there %s for order %s' % (email_code, order))
-				
-				# Forward Amazon Gift Email
-				forward_email(msg, email_to)
-
-			else:
-				print 'order is None'
-
- 	# Logout
-	server.close()
-	server.logout()
-
-
-
 
 if __name__ == '__main__':
 	server = connect_email_server()
-	extract_order_code(check_inbox(server))
+	check_inbox(server)
 
 
 

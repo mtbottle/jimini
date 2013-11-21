@@ -59,7 +59,7 @@ def mail_cron(request):
         email_list = check_mail.check_inbox(server)
 	print 'running mail_cron'
 
-	# If UNREAD @jimini emails found..
+	# If UNREAD 'code@jimini' emails found..
 	if len(email_list) > 0:
 		print 'found email..'
 
@@ -90,12 +90,17 @@ def mail_cron(request):
                                 order.order_status = 'Gift Received'
 				order.save()                                                                                                                                                    
                                 
-				# Send gift received email to sender!                                                                                                                                
+				# Need to get sender's email address from Amazon
+				order_id = order.amazonOrderReferenceId
 				first_name = 'Brendan'
 				email_to = 'bfortuner@gmail.com'
-                                order.gift_received_email(first_name, email_to)                                                                                                                  
-                                # sendmail.send_jimini_email('confirmation@jimini.co', email_to, 'Jimini received your digital gift', 'hey there mister %s' % jimini_code)
+				
+				origami = Origami.objects.get(id=order.origami_id)
+				origami_price = origami.price
+				origami_title = origami.title
 
+				# Send gift received confirmation email to sender
+				order.gift_received_email(first_name, email_to, origami_price, origami_title)                                                                                                                  
                                 # Forward Amazon, Google, etc. gift receipt email                                                                                                             
 				check_mail.forward_email(msg, email_to)
 
@@ -103,10 +108,8 @@ def mail_cron(request):
         server.close()
         server.logout()
 
-	#sendmail.send_jimini_email('info@jimini.co', 'bfortuner@gmail.com', 'hi', 'This is my message')
-	origamis = Origami.objects.all()
-	return render_to_response('index.html',{'origamis': origamis},
-							   context_instance=RequestContext(request))
+	# Render a blank page
+	return render_to_response('blank.html', context_instance=RequestContext(request))
 
 
 

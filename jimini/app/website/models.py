@@ -100,9 +100,9 @@ class Order(models.Model):
 		sendmail.send_jimini_email(email_from, email_to, subject, html)
 
 
-	def gift_received_email(self, first_name, email_to):
+	def gift_received_email(self, first_name, email_to, origami_price, origami_title):
 		template = env.get_template('digital_gift_received.html')
-		html = template.render(first_name=first_name)
+		html = template.render(first_name=first_name, email_code=self.email_code, origami_price=origami_price, origami_title=origami_title)
 		email_from = 'confirmation@jimini.co'
 		subject = "We Received Your Digital Gift!"
 
