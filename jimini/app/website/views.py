@@ -57,11 +57,9 @@ def mail_cron(request):
 	
 	# Check inbox for UNREAD messages sent to email-code@jimin.co
         email_list = check_mail.check_inbox(server)
-	print 'running mail_cron'
 
 	# If UNREAD 'code@jimini' emails found..
 	if len(email_list) > 0:
-		print 'found email..'
 
 		for msg in email_list:
 			# Extract email-code from 'to' header
