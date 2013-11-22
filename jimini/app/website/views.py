@@ -76,11 +76,10 @@ def mail_cron(request):
 
 			# If order match found...
                         if order != None:
-				
 				# Update order status to 'gift received'                                                                                                                          
                                 order.order_status = 'Gift Received'
-				order.save()                                                                                                                                                    
-                                
+				order.save()                                                                                                                       
+
 				# TEMPORARY: Need to get sender's email address from Amazon
 				order_id = order.amazonOrderReferenceId
 				first_name = 'Brendan'
@@ -92,8 +91,9 @@ def mail_cron(request):
 				origami_title = origami.title
 
 				# Send gift received confirmation email to sender
-				order.gift_received_email(first_name, email_to, origami_price, origami_title)                                                                                                                  
-                                # Forward Amazon, Google, etc. gift receipt email                                                                                                             
+				order.gift_received_email(first_name, email_to, origami_price, origami_title)
+
+				# Forward Amazon, Google, etc. gift receipt email                                                                                                 
 				check_mail.forward_email(msg, email_to)
 
         # Logout                                                                                                                                                                                     

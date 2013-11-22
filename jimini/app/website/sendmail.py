@@ -15,38 +15,40 @@ loader = FileSystemLoader(template_dir)
 env = Environment(loader=loader)
 
 # Temporary login info for personal gmail account
-username = 'bfortuner' #'cricket@jimini.co'
-password = 'brendan90' #'Cricket@SW2012'
+#username = 'bfortuner' #'cricket@jimini.co'
+#password = 'brendan90' #'Cricket@SW2012'
+username = 'cricket@jimini.co'
+password = 'Cricket@SW2012'
 
 # Temporary overrides for testing
-email_from = 'bfortuner@gmail.com'
-email_to = 'bfortuner@gmail.com'
-subject = "Your Jimini Order!"
+#email_from = 'cricket@jimini.co'
+#email_to = 'bfortuner@gmail.com'
+#subject = "Your Jimini Order!"
+#html = "hey man whats up"
 
 
-
-def send_jimini_email(email_from, email_to, subject, html):
+def send_jimini_email(from_email, to_email, subject, html):
 	''' Primary email sending function that takes in pre-generated 
 	    HTML, sender, recipient, and subject'''
 
 	# Generate email header
 	msg = MIMEText(html, 'html')
-	msg["From"] = email_from
-	msg["To"] = email_to
+	msg["From"] = from_email
+	msg["To"] = to_email
 	msg["Subject"] = subject
 
 	
 	# Connect to server
- 	server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
+ 	# server = smtplib.SMTP("smtp.gmail.com", 587)
+        server = smtplib.SMTP("smtp.jimini.co", 587)
+	server.starttls()
         server.login(username, password)
-        server.sendmail(email_from, email_to, msg.as_string())
+        server.sendmail(from_email, to_email, msg.as_string())
 
 	# Exit server
         server.quit()	
 
 
 if __name__ == '__main__':
-	pass
-#send_jimini_email(email_from, email_to, subject, html)
+	send_jimini_email('bfortuner@gmail.com', 'cricket@jimini.co', 'hey there hot dog', 'sup')
 
