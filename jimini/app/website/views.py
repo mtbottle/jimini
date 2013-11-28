@@ -247,7 +247,39 @@ def confirmation(request, order_id):
 	pp = pprint.PrettyPrinter(depth=6)
 	pp.pprint(mwsResponse.parsed)
 	
+	'''
+	Sample response from the call to MWS
+	{'OrderReferenceDetails': {'AmazonOrderReferenceId': {'value': 'S01-9217317-8996004'},
+                           'Buyer': {'Email': {'value': 'johndoe@jimini.co'},
+                                     'Name': {'value': 'John Doe'},
+                                     'value': '\n        '},
+                           'CreationTimestamp': {'value': '2013-11-28T07:01:54.082Z'},
+                           'Destination': {'DestinationType': {'value': 'Physical'},
+                                           'PhysicalDestination': {'AddressLine1': {'value': "419 King's Road"},
+                                                                   'City': {'value': 'Chelsea'},
+                                                                   'CountryCode': {'value': 'GB'},
+                                                                   'Name': {'value': 'Jane Doe'},
+                                                                   'Phone': {'value': '800-000-0000'},
+                                                                   'PostalCode': {'value': 'SW3 4ND'},
+                                                                   'StateOrRegion': {'value': 'London'},
+                                                                   'value': '\n          '},
+                                           'value': '\n        '},
+                           'ExpirationTimestamp': {'value': '2014-05-27T07:01:54.082Z'},
+                           'OrderReferenceStatus': {'LastUpdateTimestamp': {'value': '2013-11-28T07:02:16.524Z'},
+                                                    'State': {'value': 'Open'},
+                                                    'value': '\n        '},
+                           'OrderTotal': {'Amount': {'value': '10.00'},
+                                          'CurrencyCode': {'value': 'USD'},
+                                          'value': '\n        '},
+                           'ReleaseEnvironment': {'value': 'Sandbox'},
+                           'SellerOrderAttributes': {'SellerOrderId': {'value': '9'},
+                                                     'value': '\n        '},
+                           'value': '\n      '},
+    'value': '\n    '}
+    '''
+	
 	physicalDestination = mwsResponse.parsed.OrderReferenceDetails.Destination.PhysicalDestination
+	buyer = mwsResponse.parsed.OrderReferenceDetails.Buyer
 	
 	order.ship_to_name = physicalDestination.Name
 	address = physicalDestination.AddressLine1
@@ -263,8 +295,8 @@ def confirmation(request, order_id):
 	order.save()
 
 	# Send order confirmation email
-	first_name = 'Brendan' #user.first_name
-	email_to = 'bfortuner@gmail.com' #user.email
+	first_name = buyer.Name
+	email_to = buyer.Email
 
 	origami_price = origami.price
 	origami_title = origami.title
