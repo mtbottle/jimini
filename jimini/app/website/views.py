@@ -21,7 +21,7 @@ MWS_ACCESS_KEY = "AKIAJXQZJU2XOOX326JQ"
 MWS_SECRET_KEY = "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"
 MWS_SELLER_ID = "A2OSAYU8Y178Y0"
 
-mws = MWS(access_key=MWS_ACCESS_KEY,secret_key=MWS_SECRET_KEY,account_id=MWS_SELLER_ID,uri="/OffAmazonPayments_Sandbox/2013-01-01",version="2013-01-01")
+mws = MWS(access_key=MWS_ACCESS_KEY,secret_key=MWS_SECRET_KEY,account_id=MWS_SELLER_ID,uri="/OffAmazonPayments/2013-01-01",version="2013-01-01")
 
 app_dir = os.path.dirname(__file__) # get current directory
 
