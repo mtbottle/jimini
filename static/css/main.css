@@ -108,8 +108,8 @@ ul {
 	padding-right: 3px;
 	height:100px;
 	width: 213px;
-	opacity: 0.4;
-    	filter: alpha(opacity=40); /* msie */	
+	opacity: 0.25;
+    	filter: alpha(opacity=90); /* msie */	
 }
 
 
@@ -279,7 +279,11 @@ img.center {
 }
 
 .tutorial {
-	    padding-top: 10px;
+	  height: 200px;
+	  width: 214px;
+	  opacity: .85;
+        filter: alpha(opacity=80); /* msie */	
+	  padding-top: 10px;
 	    padding-right: 3px;
         }
         
